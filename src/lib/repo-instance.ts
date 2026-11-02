@@ -11,7 +11,7 @@ let singleton: Repo | null = null;
  */
 export function repo(): Repo {
   if (singleton) return singleton;
-  const mode = (process.env.REPO ?? 'auto').toLowerCase();
+  const mode = (process.env.REPO ?? 'json').toLowerCase();
   const hasSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   const useSupabase = mode === 'supabase' || (mode === 'auto' && hasSupabase);
   if (mode === 'supabase' && !hasSupabase) {
