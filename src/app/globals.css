@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── SastaDeal theme (benzin.jetzt-inspired) ──────────────────────── */
+
+:root {
+  --font-dm-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-bricolage: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-dm-sans);
+  background: #0A0A0B;
+  color: #E8E8EC;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark-first; allow opting into light via class on <html> */
+html.light body {
+  background: #F4F4F6;
+  color: #111113;
+}
+
+/* ── Components ───────────────────────────────────────────────────── */
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-deal-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-deal-600 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 px-4 py-2.5 text-sm font-medium text-ink-200 transition-colors hover:bg-ink-800 hover:text-white;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-700 px-3 py-1 text-xs font-medium text-ink-200 transition-colors hover:border-ink-600 hover:bg-ink-800;
+  }
+  .chip-active {
+    @apply border-deal-500 bg-deal-500/15 text-deal-400;
+  }
+  .card {
+    @apply rounded-2xl border border-ink-800 bg-ink-900/60 shadow-card backdrop-blur-sm;
+  }
+  .deal-card {
+    @apply card flex flex-col gap-3 p-4 transition-all hover:border-ink-700 hover:-translate-y-0.5;
+  }
+  .price-trend-up {
+    @apply text-deal-400;
+  }
+  .price-trend-down {
+    @apply text-emerald-400;
+  }
+  .status-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider;
+  }
+  .status-active { @apply bg-emerald-500/15 text-emerald-400; }
+  .status-expiring { @apply bg-amber-500/15 text-amber-400; }
+  .status-expired { @apply bg-ink-700 text-ink-400 line-through; }
+}
+
+/* ── Skeleton shimmer ─────────────────────────────────────────────── */
+
+.skeleton {
+  background: linear-gradient(90deg, #1C1C21 0%, #26262D 50%, #1C1C21 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: inherit;
+}
+
+/* ── Range slider (radius slider from benzin.jetzt) ───────────────── */
+
+.range-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: #26262D;
+  outline: none;
+}
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #FF4D2E;
+  border: 2px solid #111113;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(255, 77, 46, 0.4);
+}
+.range-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #FF4D2E;
+  border: 2px solid #111113;
+  cursor: pointer;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────── */
+
+.scroll-thin::-webkit-scrollbar { width: 6px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: #33333C; border-radius: 999px; }
+.scroll-thin::-webkit-scrollbar-track { background: transparent; }
+
+/* ── Reveal-on-scroll ─────────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
