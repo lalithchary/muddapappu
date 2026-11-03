@@ -131,7 +131,7 @@ export function AdminClient() {
           {affiliates && (
             <div className="space-y-4">
               {STORE_LIST.map((store) => {
-                const cfg = affiliates[store.id];
+                const cfg = affiliates[store.id] || { tag: 'muddapappu', useCuelinks: true };
                 return (
                   <div key={store.id} className="rounded-lg border border-ink-800 p-4">
                     <div className="flex items-center justify-between">
