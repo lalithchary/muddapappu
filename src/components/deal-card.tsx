@@ -33,8 +33,10 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
             </div>
           </div>
           <div className="flex flex-col items-end">
-            <span className="text-base font-bold text-deal-600">{deal.discountPct}%</span>
-            <span className="text-[10px] text-ink-600 uppercase tracking-wider">off</span>
+            <span className="text-base font-bold text-[var(--color-accent-primary)]">{deal.discountPct}%</span>
+            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">
+              off
+            </span>
           </div>
         </div>
 
@@ -45,20 +47,20 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
               src={deal.image}
               alt={deal.title}
               loading="lazy"
-              className="h-32 w-full object-cover transition-transform duration-300 hover:scale-105 bg-ink-800"
+              className="h-32 w-full object-cover transition-transform duration-300 hover:scale-105 bg-[var(--color-surface-2)]"
               onError={(e) => {
                 // Fallback to store-based placeholder on error
                 const target = e.target as HTMLImageElement;
                 if (target.dataset.fallback !== '1') {
                   target.dataset.fallback = '1';
-                  target.src = `https://via.placeholder.com/400x256/1C1C21/E8E8EC?text=${encodeURIComponent(deal.store)}`;
+                  target.src = `https://via.placeholder.com/400x256/26262D/E8E8EC?text=${encodeURIComponent(deal.store)}`;
                 }
               }}
             />
           </div>
         ) : (
-          <div className="mb-2 flex h-32 items-center justify-center rounded-lg bg-ink-900">
-            <span className="text-xs text-ink-600">No image available</span>
+          <div className="mb-2 flex h-32 items-center justify-center rounded-lg bg-[var(--color-surface-2)]">
+            <span className="text-xs text-[var(--color-text-muted)]">No image available</span>
           </div>
         )}
 
@@ -67,7 +69,7 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
           <h3
             className={cn(
               'line-clamp-2 text-sm font-semibold leading-snug',
-              isExpired && 'line-through text-ink-600',
+              isExpired && 'line-through text-[var(--color-text-muted)]',
             )}
           >
             {deal.title}
@@ -76,17 +78,17 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
 
         {/* Price row */}
         <div className="mt-1 flex items-center gap-2">
-          <span className="text-lg font-bold text-ink-100">{formatPrice(deal.price)}</span>
+          <span className="text-lg font-bold text-[var(--color-text)]">{formatPrice(deal.price)}</span>
           <span
             className={cn(
               'text-xs',
-              isExpired ? 'text-ink-600 line-through' : 'text-ink-500 line-through',
+              isExpired ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text-secondary)] line-through',
             )}
           >
             {formatPrice(deal.mrp)}
           </span>
           {deal.rating && (
-            <span className="ml-auto text-xs text-ink-600">
+            <span className="ml-auto text-xs text-[var(--color-text-muted)]">
               ★ {deal.rating.toFixed(1)}
             </span>
           )}
@@ -99,8 +101,8 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
 
         {/* Expiring indicator */}
         {isEnding && (
-          <div className="flex items-center gap-1.5 text-xs text-amber-400">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
+          <div className="flex items-center gap-1.5 text-xs text-[var(--color-accent-warning)]">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-accent-warning)]" />
             Ends in {formatCountdown(deal.endsInSeconds)}
           </div>
         )}
@@ -121,18 +123,18 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
           <button
             onClick={() => setShowComments(true)}
             aria-label="Comments"
-            className="relative grid place-items-center rounded-lg border border-ink-700 p-2 text-ink-500 transition-colors hover:border-ink-600 hover:bg-ink-900 hover:text-ink-100"
+            className="relative grid place-items-center rounded-lg border border-[var(--color-border)] p-2 text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-border-2)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
           >
             <MessageSquare className="h-4 w-4" />
             {commentCount > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-deal-600 px-1 text-[10px] font-bold text-white">
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-accent-primary)] px-1 text-[10px] font-bold text-[var(--color-bg)]">
                 {commentCount > 99 ? '99+' : commentCount}
               </span>
             )}
           </button>
           <button
             aria-label="Add to wishlist"
-            className="grid place-items-center rounded-lg border border-ink-700 p-2 text-ink-500 transition-colors hover:border-ink-600 hover:bg-ink-900 hover:text-ink-100"
+            className="grid place-items-center rounded-lg border border-[var(--color-border)] p-2 text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-border-2)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
