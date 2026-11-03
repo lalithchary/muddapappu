@@ -20,13 +20,17 @@ export default {
           100: '#E8E8EC',
         },
         deal: {
-          // hot orange-red accent (deals = urgency)
-          50: '#FFF3EF',
-          100: '#FFE4DB',
-          400: '#FF6B45',
-          500: '#FF4D2E',
-          600: '#E63C1F',
-          700: '#C22F15',
+          // warm orange → yellow accent (Muddapappu brand)
+          50: '#FFF9E8',
+          100: '#FFF3D0',
+          200: '#FFE49E',
+          300: '#FFD166',
+          400: '#FFB627',
+          500: '#FF9F1C',
+          600: '#F77F00',
+          700: '#D96800',
+          800: '#B34E00',
+          900: '#8A3B00',
         },
       },
       fontFamily: {

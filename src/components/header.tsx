@@ -29,8 +29,9 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-ink-800 bg-ink-950/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
         <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold">
-          <span className="grid place-items-center rounded-lg bg-deal-500/15 p-1.5 text-deal-500">
-            <Tag className="h-5 w-5" />
+          <span className="grid place-items-center overflow-hidden rounded-full bg-white/5 p-1 ring-1 ring-deal-500/30">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Muddapappu" className="h-9 w-9 object-contain" />
           </span>
           <span>
             Mudda<span className="text-deal-500">pappu</span>

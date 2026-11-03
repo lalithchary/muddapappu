@@ -14,7 +14,7 @@ export const EXPIRY_WINDOW_MS = 24 * 60 * 60 * 1000; // 24h
 export function dealStatus(
   deal: Pick<Deal, 'endsAt' | 'verifiedAt' | 'inStock'>,
   now: number = Date.now(),
-  maxAgeMs: number = 7 * 24 * 60 * 60 * 1000, // 7 days — deals can last a week or more
+  maxAgeMs: number = 15 * 24 * 60 * 60 * 1000, // 15 days — deals stay listed for at least 2 weeks
 ): Status {
   if (!deal.inStock) return 'expired';
 

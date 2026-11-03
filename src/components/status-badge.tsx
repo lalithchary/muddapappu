@@ -3,7 +3,7 @@ import type { DealResult, Status } from '@/lib/types';
 
 const LABELS: Record<Status, string> = {
   active: 'Live',
-  expiring: 'Expired',
+  expiring: 'Expiring',
   expired: 'Expired',
 };
 

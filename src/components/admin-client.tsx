@@ -11,12 +11,14 @@ type AffiliateConfig = {
 };
 
 export function AdminClient() {
-  const [tab, setTab] = useState<'deals' | 'coupons' | 'affiliates'>('deals');
+  const [tab, setTab] = useState<'deals' | 'coupons' | 'affiliates' | 'settings'>('deals');
   const [deals, setDeals] = useState<DealResult[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [affiliates, setAffiliates] = useState<AffiliateConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ current: '', new: '', confirm: '' });
+  const [passwordMsg, setPasswordMsg] = useState('');
 
   async function load() {
     const res = await fetch(`/api/deals?type=${tab}`);
@@ -24,9 +26,9 @@ export function AdminClient() {
     if (tab === 'deals') setDeals(json.deals ?? []);
     else if (tab === 'coupons') setCoupons(json.coupons ?? []);
     else if (tab === 'affiliates') {
-      const configRes = await fetch('/data/store/affiliate-config.json');
-      const config = await configRes.json();
-      setAffiliates(config);
+      const configRes = await fetch('/api/config');
+      const configJson = await configRes.json();
+      setAffiliates(configJson.config ?? {});
     }
     setLoading(false);
   }
@@ -40,7 +42,7 @@ export function AdminClient() {
       await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'affiliates', data: affiliates }),
+        body: JSON.stringify({ config: affiliates }),
       });
     } finally {
       setSaving(false);
@@ -101,6 +103,12 @@ export function AdminClient() {
         >
           Affiliate Links
         </button>
+        <button
+          onClick={() => setTab('settings')}
+          className={cn('rounded-lg px-4 py-2 text-sm font-medium', tab === 'settings' ? 'bg-deal-500 text-white' : 'bg-ink-800 text-ink-200')}
+        >
+          Settings
+        </button>
       </div>
 
       {tab === 'affiliates' && (
@@ -155,6 +163,82 @@ export function AdminClient() {
               <li><strong>Flipkart/Myntra/Ajio:</strong> Requires Cuelinks membership for tracking links</li>
               <li><strong>Swiggy/Zomato/Zepto/BigBasket:</strong> Promo codes + app deep links via Cuelinks</li>
             </ul>
+          </div>
+        </div>
+      )}
+
+      {tab === 'settings' && (
+        <div className="card p-6 max-w-2xl">
+          <h3 className="mb-4 text-sm font-semibold text-ink-200">Admin Settings</h3>
+          <div className="space-y-4">
+            <div className="rounded-lg bg-ink-900/40 p-4">
+              <h4 className="mb-2 text-sm font-medium text-ink-100">Change Admin Password</h4>
+              <div className="space-y-3">
+                <input
+                  type="password"
+                  placeholder="Current password"
+                  value={passwordForm.current}
+                  onChange={(e) => setPasswordForm(f => ({ ...f, current: e.target.value }))}
+                  className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-sm text-ink-100 focus:border-deal-500"
+                />
+                <input
+                  type="password"
+                  placeholder="New password"
+                  value={passwordForm.new}
+                  onChange={(e) => setPasswordForm(f => ({ ...f, new: e.target.value }))}
+                  className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-sm text-ink-100 focus:border-deal-500"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={passwordForm.confirm}
+                  onChange={(e) => setPasswordForm(f => ({ ...f, confirm: e.target.value }))}
+                  className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-sm text-ink-100 focus:border-deal-500"
+                />
+                <button
+                  onClick={async () => {
+                    if (!passwordForm.current || !passwordForm.new || !passwordForm.confirm) {
+                      setPasswordMsg('All fields are required');
+                      return;
+                    }
+                    if (passwordForm.new !== passwordForm.confirm) {
+                      setPasswordMsg('New passwords do not match');
+                      return;
+                    }
+                    if (passwordForm.new.length < 6) {
+                      setPasswordMsg('Password must be at least 6 characters');
+                      return;
+                    }
+                    try {
+                      const res = await fetch('/api/admin/change-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          current: passwordForm.current,
+                          new: passwordForm.new
+                        })
+                      });
+                      const json = await res.json();
+                      if (json.ok) {
+                        setPasswordMsg('Password changed successfully');
+                        setPasswordForm({ current: '', new: '', confirm: '' });
+                        setTimeout(() => setPasswordMsg(''), 3000);
+                      } else {
+                        setPasswordMsg(json.error || 'Failed to change password');
+                      }
+                    } catch {
+                      setPasswordMsg('Failed to change password');
+                    }
+                  }}
+                  className="btn-primary py-2 text-sm"
+                >
+                  Change Password
+                </button>
+                {passwordMsg && (
+                  <p className="text-xs text-ink-300">{passwordMsg}</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -90,16 +90,16 @@ html.light body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #FF4D2E;
+  background: #FF9F1C;
   border: 2px solid #111113;
   cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(255, 77, 46, 0.4);
+  box-shadow: 0 0 0 1px rgba(255, 159, 28, 0.4);
 }
 .range-input::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #FF4D2E;
+  background: #FF9F1C;
   border: 2px solid #111113;
   cursor: pointer;
 }
