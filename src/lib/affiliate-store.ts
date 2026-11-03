@@ -112,8 +112,8 @@ async function persistToGitHub(config: AffiliateConfig, timestamp: string, token
     // File doesn't exist yet
   }
 
-  // Update the file
-  const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/data/store/affiliate-config.json`, {
+  // Update the file with retry logic for concurrent modifications
+  const updateResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/data/store/affiliate-config.json`, {
     method: 'PUT',
     headers,
     body: JSON.stringify({
@@ -123,9 +123,52 @@ async function persistToGitHub(config: AffiliateConfig, timestamp: string, token
     }),
   });
 
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`GitHub API error: ${response.status} ${text}`);
+  if (!updateResponse.ok) {
+    const errorText = await updateResponse.text();
+    
+    // Handle 409 Conflict - file was modified since we read it
+    if (updateResponse.status === 409 && sha) {
+      try {
+        // Get fresh content, merge changes, and retry
+        const currentRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/data/store/affiliate-config.json`, {
+          headers,
+        });
+        if (currentRes.ok) {
+          const currentData = await currentRes.json();
+          // Merge: apply current config as base, then overlay admin changes
+          // This ensures admin changes take precedence
+          const content = Buffer.from(currentData.content, 'base64').toString('utf8');
+          const currentConfig = JSON.parse(content);
+          
+          // Merge: current values as base, new values override
+          const mergedConfig = { ...currentConfig, ...config };
+          
+          const mergedContent = JSON.stringify(mergedConfig, null, 2);
+          const mergedEncoded = Buffer.from(mergedContent).toString('base64');
+          
+          const retryResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/data/store/affiliate-config.json`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({
+              message: `Update affiliate config via admin (merged) - ${timestamp}`,
+              content: mergedEncoded,
+              sha: currentData.sha,
+            }),
+          });
+
+          if (retryResponse.ok) {
+            // Update cache with merged config
+            cachedConfig = mergedConfig;
+            cacheTime = Date.now();
+            return;
+          }
+        }
+      } catch (mergeError) {
+        console.error('Merge failed:', mergeError);
+      }
+    }
+    
+    throw new Error(`GitHub API error: ${updateResponse.status} ${errorText}`);
   }
 
   // Update cache
