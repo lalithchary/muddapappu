@@ -21,16 +21,27 @@ export function AdminClient() {
   const [passwordMsg, setPasswordMsg] = useState('');
 
   async function load() {
-    const res = await fetch(`/api/deals?type=${tab}`);
-    const json = await res.json();
-    if (tab === 'deals') setDeals(json.deals ?? []);
-    else if (tab === 'coupons') setCoupons(json.coupons ?? []);
-    else if (tab === 'affiliates') {
-      const configRes = await fetch('/api/config');
-      const configJson = await configRes.json();
-      setAffiliates(configJson.config ?? {});
+    if (tab === 'settings' || (!tab || tab === '')) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    setLoading(true);
+    try {
+      if (tab === 'deals' || tab === 'coupons') {
+        const res = await fetch(`/api/deals?type=${tab}`);
+        const json = await res.json();
+        if (tab === 'deals') setDeals(json.deals ?? []);
+        else if (tab === 'coupons') setCoupons(json.coupons ?? []);
+      } else if (tab === 'affiliates') {
+        const configRes = await fetch('/api/config');
+        const configJson = await configRes.json();
+        setAffiliates(configJson.config ?? {});
+      }
+    } catch (e) {
+      console.error('Failed to load data', e);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [tab]);
