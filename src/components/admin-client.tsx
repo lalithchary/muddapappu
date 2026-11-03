@@ -34,11 +34,15 @@ export function AdminClient() {
         else if (tab === 'coupons') setCoupons(json.coupons ?? []);
       } else if (tab === 'affiliates') {
         const configRes = await fetch('/api/config');
+        if (!configRes.ok) {
+          throw new Error('Failed to fetch config');
+        }
         const configJson = await configRes.json();
         setAffiliates(configJson.config ?? {});
       }
     } catch (e) {
       console.error('Failed to load data', e);
+      setAffiliates({});
     } finally {
       setLoading(false);
     }
