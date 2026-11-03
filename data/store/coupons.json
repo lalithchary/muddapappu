@@ -1,0 +1,54 @@
+[
+  {
+    "id": "cuelinks-amazon-welcome",
+    "store": "amazon",
+    "code": "AMZNEW50",
+    "title": "Flat ₹50 Cashback on First Amazon Pay Order",
+    "description": "Applicable on mobile recharge, bill payments, and shopping",
+    "value": 50,
+    "valueType": "flat",
+    "minOrder": 199,
+    "expiresAt": "2026-11-16T06:06:33.379Z",
+    "active": true,
+    "ctaUrl": "https://www.amazon.in"
+  },
+  {
+    "id": "swiggy-welcome-100",
+    "store": "swiggy",
+    "code": "WELCOME100",
+    "title": "50% OFF up to ₹100 on First 3 Food Delivery Orders",
+    "description": "Valid on restaurants accepting Swiggy Pay",
+    "value": 50,
+    "valueType": "percent",
+    "minOrder": 149,
+    "expiresAt": "2026-12-01T06:06:33.379Z",
+    "active": true,
+    "ctaUrl": "https://www.swiggy.com"
+  },
+  {
+    "id": "myntra-fashion-200",
+    "store": "myntra",
+    "code": "MYNTRA200",
+    "title": "Flat ₹200 OFF on Apparel Orders Over ₹1,499",
+    "description": "Applicable on select styles across Nike, Puma, Levi's",
+    "value": 200,
+    "valueType": "flat",
+    "minOrder": 1499,
+    "expiresAt": "2026-11-08T06:06:33.379Z",
+    "active": true,
+    "ctaUrl": "https://www.myntra.com"
+  },
+  {
+    "id": "zomato-gold-first",
+    "store": "zomato",
+    "code": "ZOMATOGOLD",
+    "title": "Flat ₹150 OFF on Zomato Gold Annual Membership",
+    "description": "Unlimited free deliveries + up to 40% off dining out",
+    "value": 150,
+    "valueType": "flat",
+    "minOrder": 0,
+    "expiresAt": "2026-11-21T06:06:33.379Z",
+    "active": true,
+    "ctaUrl": "https://www.zomato.com"
+  }
+]
