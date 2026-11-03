@@ -21,7 +21,7 @@ export function AdminClient() {
   const [passwordMsg, setPasswordMsg] = useState('');
 
   async function load() {
-    if (tab === 'settings' || (!tab || tab === '')) {
+    if (tab === 'settings') {
       setLoading(false);
       return;
     }
@@ -38,11 +38,11 @@ export function AdminClient() {
           throw new Error('Failed to fetch config');
         }
         const configJson = await configRes.json();
-        setAffiliates(configJson.config ?? {});
+        setAffiliates(configJson.config ?? ({} as AffiliateConfig));
       }
     } catch (e) {
       console.error('Failed to load data', e);
-      setAffiliates({});
+      setAffiliates({} as AffiliateConfig);
     } finally {
       setLoading(false);
     }
