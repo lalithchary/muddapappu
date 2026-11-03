@@ -6,33 +6,60 @@ import { cn } from '@/lib/cn';
 import { STORE_LIST } from '@/lib/stores';
 import type { DealResult, Coupon, StoreId } from '@/lib/types';
 
-/** Affiliate tracking configuration for each store */
-const AFFILIATE_CONFIG: Record<StoreId, { tag: string; useCuelinks: boolean }> = {
-  amazon: { tag: 'muddapappu-21', useCuelinks: false },
-  flipkart: { tag: 'muddapappu', useCuelinks: true }, // Use Cuelinks shortlink
-  myntra: { tag: 'muddapappu', useCuelinks: true },
-  ajio: { tag: 'muddapappu', useCuelinks: true },
-  swiggy: { tag: 'muddapappu', useCuelinks: true },
-  zomato: { tag: 'muddapappu', useCuelinks: true },
-  zepto: { tag: 'muddapappu', useCuelinks: true },
-  bigbasket: { tag: 'muddapappu', useCuelinks: true },
+type AffiliateConfig = {
+  [store in StoreId]: { tag: string; useCuelinks: boolean };
 };
 
 export function AdminClient() {
   const [tab, setTab] = useState<'deals' | 'coupons' | 'affiliates'>('deals');
   const [deals, setDeals] = useState<DealResult[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [affiliates, setAffiliates] = useState<AffiliateConfig | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   async function load() {
     const res = await fetch(`/api/deals?type=${tab}`);
     const json = await res.json();
     if (tab === 'deals') setDeals(json.deals ?? []);
-    else setCoupons(json.coupons ?? []);
+    else if (tab === 'coupons') setCoupons(json.coupons ?? []);
+    else if (tab === 'affiliates') {
+      const configRes = await fetch('/data/store/affiliate-config.json');
+      const config = await configRes.json();
+      setAffiliates(config);
+    }
     setLoading(false);
   }
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [tab]);
+
+  async function saveConfig() {
+    if (!affiliates) return;
+    setSaving(true);
+    try {
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'affiliates', data: affiliates }),
+      });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function updateTag(storeId: StoreId, tag: string) {
+    if (!affiliates) return;
+    const updated = { ...affiliates, [storeId]: { ...affiliates[storeId], tag } };
+    setAffiliates(updated);
+    await saveConfig();
+  }
+
+  async function toggleCuelinks(storeId: StoreId, useCuelinks: boolean) {
+    if (!affiliates) return;
+    const updated = { ...affiliates, [storeId]: { ...affiliates[storeId], useCuelinks } };
+    setAffiliates(updated);
+    await saveConfig();
+  }
 
   async function remove(id: string) {
     if (!confirm('Delete this item?')) return;
@@ -78,32 +105,55 @@ export function AdminClient() {
 
       {tab === 'affiliates' && (
         <div className="card p-6">
-          <h3 className="mb-4 text-sm font-semibold text-ink-200">Store Affiliate Configuration</h3>
-          <dl className="divide-y divide-ink-800">
-            {STORE_LIST.map((store) => {
-              const cfg = AFFILIATE_CONFIG[store.id];
-              return (
-                <div key={store.id} className="flex items-center justify-between py-3">
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full" style={{ background: store.color }} />
-                    <dt className="text-sm font-medium text-ink-100">{store.name}</dt>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-ink-300">
-                      {cfg.useCuelinks ? 'Cuelinks Shortlink' : `Amazon Tag: ${cfg.tag}-21`}
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-ink-200">Store Affiliate Configuration</h3>
+            {saving && <span className="text-xs text-ink-400">Saving...</span>}
+          </div>
+          {affiliates && (
+            <div className="space-y-4">
+              {STORE_LIST.map((store) => {
+                const cfg = affiliates[store.id];
+                return (
+                  <div key={store.id} className="rounded-lg border border-ink-800 p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full" style={{ background: store.color }} />
+                        <div>
+                          <div className="font-medium text-ink-100">{store.name}</div>
+                          <div className="text-xs text-ink-500">{store.domain}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={cfg.useCuelinks}
+                            onChange={(e) => toggleCuelinks(store.id, e.target.checked)}
+                            className="h-4 w-4 rounded border-ink-600 bg-ink-800"
+                          />
+                          <span className="text-xs text-ink-300">Use Cuelinks</span>
+                        </label>
+                        {!cfg.useCuelinks && (
+                          <input
+                            type="text"
+                            value={cfg.tag}
+                            onChange={(e) => updateTag(store.id, e.target.value)}
+                            className="w-24 rounded-md border border-ink-700 bg-ink-900 px-2 py-1 text-xs text-ink-100 focus:border-deal-500"
+                          />
+                        )}
+                      </div>
                     </div>
-                    <code className="text-xs text-ink-500">{store.domain}</code>
                   </div>
-                </div>
-              );
-            })}
-          </dl>
+                );
+              })}
+            </div>
+          )}
           <div className="mt-4 rounded-lg bg-ink-900/40 p-4 text-xs text-ink-400">
             <p className="font-semibold text-ink-200 mb-1">How affiliate links are generated:</p>
             <ul className="list-inside list-disc space-y-1">
-              <li><strong>Amazon:</strong> Uses your Amazon Associates tag with the product ASIN</li>
-              <li><strong>Flipkart/Myntra/Jio/Ajio:</strong> Requires Cuelinks membership for tracking links</li>
-              <li><strong>Swiggy/Zomato/Zepto:</strong> Promo codes + app deep links via Cuelinks</li>
+              <li><strong>Amazon:</strong> Uses your Amazon Associates tag (e.g., <code>{affiliates?.amazon?.tag || 'muddapappu-21'}-21</code>)</li>
+              <li><strong>Flipkart/Myntra/Ajio:</strong> Requires Cuelinks membership for tracking links</li>
+              <li><strong>Swiggy/Zomato/Zepto/BigBasket:</strong> Promo codes + app deep links via Cuelinks</li>
             </ul>
           </div>
         </div>

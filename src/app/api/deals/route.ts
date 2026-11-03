@@ -1,12 +1,13 @@
 import { cookies } from 'next/headers';
 import { repo } from '@/lib/repo-instance';
 import { applyQuery } from '@/lib/repo';
+import { ADMIN_PASSWORD } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   const cookie = (await cookies()).get('admin_session');
-  if (!cookie || cookie.value !== process.env.ADMIN_PASSWORD) {
+  if (!cookie || cookie.value !== ADMIN_PASSWORD) {
     return Response.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
   const url = new URL(request.url);
@@ -20,7 +21,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const cookie = (await cookies()).get('admin_session');
-  if (!cookie || cookie.value !== process.env.ADMIN_PASSWORD) {
+  if (!cookie || cookie.value !== ADMIN_PASSWORD) {
     return Response.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
   const body = await request.json();
@@ -33,12 +34,19 @@ export async function POST(request: Request) {
     await repo().saveCoupon(body.coupon);
     return Response.json({ ok: true, id: body.coupon.id });
   }
+  if (type === 'affiliates') {
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    const configPath = path.join(process.cwd(), 'data', 'store', 'affiliate-config.json');
+    await fs.writeFile(configPath, JSON.stringify(body.data, null, 2));
+    return Response.json({ ok: true });
+  }
   return Response.json({ ok: false, error: 'unknown type' }, { status: 400 });
 }
 
 export async function DELETE(request: Request) {
   const cookie = (await cookies()).get('admin_session');
-  if (!cookie || cookie.value !== process.env.ADMIN_PASSWORD) {
+  if (!cookie || cookie.value !== ADMIN_PASSWORD) {
     return Response.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
   const url = new URL(request.url);

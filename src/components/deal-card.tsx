@@ -26,7 +26,6 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-1.5">
-            <StoreChip store={deal.store} />
             <StatusBadge status={deal.status} />
           </div>
           <div className="flex flex-col items-end">
@@ -34,6 +33,28 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
             <span className="text-[10px] text-ink-400">OFF</span>
           </div>
         </div>
+
+        {/* Product Image */}
+        {deal.image ? (
+          <div className="relative -mx-1 mb-2 overflow-hidden rounded-lg">
+            <img
+              src={deal.image}
+              alt={deal.title}
+              loading="lazy"
+              className="h-32 w-full object-cover transition-transform duration-300 hover:scale-105"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+            <div className="absolute top-2 left-2">
+              <StoreChip store={deal.store} />
+            </div>
+          </div>
+        ) : (
+          <div className="mb-2 flex items-center">
+            <StoreChip store={deal.store} />
+          </div>
+        )}
 
         <Link href={`/deal/${deal.slug}`} className="group">
           <h3 className={cn('line-clamp-2 text-sm font-semibold leading-snug', isExpired && 'line-through text-ink-400')}>
