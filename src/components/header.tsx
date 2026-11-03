@@ -1,9 +1,9 @@
 'use client';
 
-import { Menu, Moon, Sun, Search, ShoppingBag, Tag } from 'lucide-react';
+import { Menu, Moon, Sun, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/cn';
 import { STORE_LIST } from '@/lib/stores';
 
@@ -18,11 +18,31 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [light, setLight] = useState(false);
 
+  // Load theme from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('muddapappu-theme');
+      if (saved === 'light') {
+        setLight(true);
+        document.documentElement.classList.add('light');
+      } else {
+        setLight(false);
+        document.documentElement.classList.remove('light');
+      }
+    } catch {}
+  }, []);
+
   function toggleTheme() {
     const next = !light;
     setLight(next);
-    document.documentElement.classList.toggle('light', next);
-    try { localStorage.setItem('muddapappu-theme', next ? 'light' : 'dark'); } catch {}
+    if (next) {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+    try {
+      localStorage.setItem('muddapappu-theme', next ? 'light' : 'dark');
+    } catch {}
   }
 
   return (
@@ -34,7 +54,7 @@ export function Header() {
             <img src="/logo.svg" alt="Muddapappu" className="h-9 w-9 object-contain" />
           </span>
           <span>
-            Mudda<span className="text-deal-500">pappu</span>
+            Mudda<span className="text-deal-600">pappu</span>
           </span>
         </Link>
 
@@ -47,7 +67,7 @@ export function Header() {
                 href={n.href}
                 className={cn(
                   'rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-                  active ? 'bg-ink-800 text-white' : 'text-ink-300 hover:bg-ink-800 hover:text-white',
+                  active ? 'bg-ink-800 text-ink-100' : 'text-ink-500 hover:bg-ink-800 hover:text-ink-100',
                 )}
               >
                 {n.label}
@@ -59,22 +79,22 @@ export function Header() {
         <div className="ml-auto flex items-center gap-1">
           <Link
             href="/"
-            className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-white sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:inline-flex"
           >
             <ShoppingBag className="h-4 w-4" />
             All Stores
           </Link>
           <button
             onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="grid place-items-center rounded-lg p-2 text-ink-300 transition-colors hover:bg-ink-800 hover:text-white"
+            aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
+            className="grid place-items-center rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2"
           >
             {light ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Open menu"
-            className="grid place-items-center rounded-lg p-2 text-ink-300 transition-colors hover:bg-ink-800 hover:text-white sm:hidden"
+            className="grid place-items-center rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -92,7 +112,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className={cn(
                   'rounded-lg px-3 py-2 text-sm',
-                  pathname === n.href ? 'bg-ink-800 text-white' : 'text-ink-300',
+                  pathname === n.href ? 'bg-ink-800 text-ink-100' : 'text-ink-500',
                 )}
               >
                 {n.label}

@@ -59,30 +59,39 @@ export default async function DealsPage({
   const counts = await repo().commentCounts();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6">
+    <>
       {/* Tab navigation */}
-      <div className="mb-6 flex items-center gap-1 border-b border-ink-800 pb-px">
-        <a href="/" className="border-b-2 border-deal-500 px-4 py-2 text-sm font-semibold text-white">
+      <nav className="mb-6 flex border-b border-ink-800 pb-px" aria-label="Sections">
+        <a
+          href="/"
+          className="border-b-2 border-deal-600 px-4 py-2 text-sm font-semibold text-white"
+          aria-current="page"
+        >
           Deals
         </a>
-        <a href="/community" className="border-b-2 border-transparent px-4 py-2 text-sm text-ink-400 hover:text-white transition-colors">
+        <a
+          href="/community"
+          className="border-b-2 border-transparent px-4 py-2 text-sm text-ink-500 hover:text-white transition-colors"
+        >
           Community Chat
         </a>
-      </div>
+      </nav>
 
+      {/* Hero section */}
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold sm:text-3xl">
-          Best <span className="text-deal-500">Deals</span> in India
+          Best <span className="text-deal-600">Deals</span> in India
         </h1>
-        <p className="mt-1 text-sm text-ink-400">
+        <p className="mt-1 text-sm text-ink-600">
           Live price tracking across Amazon, Flipkart, Myntra, Ajio & food delivery apps.
         </p>
       </div>
 
       <FilterBarWrapper initialQuery={query} />
 
+      {/* Results section */}
       <div className="mt-6">
-        <p className="mb-3 text-xs text-ink-500">
+        <p className="mb-3 text-xs text-ink-600">
           {filtered.length} deal{filtered.length === 1 ? '' : 's'} found
         </p>
         {pageItems.length === 0 ? (
@@ -110,6 +119,6 @@ export default async function DealsPage({
           }}
         />
       )}
-    </div>
+    </>
   );
 }

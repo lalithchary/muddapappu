@@ -34,9 +34,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${bricolage.variable} dark`}>
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${bricolage.variable} dark`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen bg-ink-950 font-sans text-ink-100 antialiased">
         <div className="flex min-h-screen flex-col">
           <Header />

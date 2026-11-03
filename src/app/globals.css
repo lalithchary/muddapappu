@@ -2,11 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── SastaDeal theme (benzin.jetzt-inspired) ──────────────────────── */
+/* ── SastaDeal theme (hallmark redesign) ──────────────────────────── */
+/* Color tokens defined at :root for both themes */
 
 :root {
-  --font-dm-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-bricolage: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  /* Typography */
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  
+  /* Light mode palette */
+  --color-ink-100: #111113;
+  --color-ink-200: #26262D;
+  --color-ink-300: #33333C;
+  --color-ink-400: #4A4A55;
+  --color-ink-500: #6E6E7A;
+  --color-ink-600: #9A9AA6;
+  --color-ink-700: #C6C6CE;
+  --color-ink-800: #E8E8EC;
+  --color-ink-900: #F4F4F6;
+  --color-ink-950: #FFFFFF;
+  
+  /* Deal accent - orange to yellow gradient */
+  --color-deal-100: #FFF9E8;
+  --color-deal-200: #FFF3D0;
+  --color-deal-300: #FFE49E;
+  --color-deal-400: #FFD166;
+  --color-deal-500: #FFB627;
+  --color-deal-600: #FF9F1C;
+  --color-deal-700: #F77F00;
+  --color-deal-800: #D96800;
+  --color-deal-900: #B34E00;
+  
+  /* Shadows */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode palette */
+[data-theme="dark"],
+html.dark {
+  --color-ink-100: #0A0A0B;
+  --color-ink-200: #111113;
+  --color-ink-300: #16161A;
+  --color-ink-400: #1C1C21;
+  --color-ink-500: #26262D;
+  --color-ink-600: #33333C;
+  --color-ink-700: #4A4A55;
+  --color-ink-800: #6E6E7A;
+  --color-ink-900: #9A9AA6;
+  --color-ink-950: #E8E8EC;
+  
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Light mode palette */
+[data-theme="light"],
+html.light {
+  --color-ink-100: #111113;
+  --color-ink-200: #26262D;
+  --color-ink-300: #33333C;
+  --color-ink-400: #4A4A55;
+  --color-ink-500: #6E6E7A;
+  --color-ink-600: #9A9AA6;
+  --color-ink-700: #C6C6CE;
+  --color-ink-800: #E8E8EC;
+  --color-ink-900: #F4F4F6;
+  --color-ink-950: #FFFFFF;
+  
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
 html {
@@ -15,65 +80,99 @@ html {
 }
 
 body {
-  font-family: var(--font-dm-sans);
-  background: #0A0A0B;
-  color: #E8E8EC;
+  font-family: var(--font-sans);
+  background: var(--color-ink-950);
+  color: var(--color-ink-100);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Dark-first; allow opting into light via class on <html> */
-html.light body {
-  background: #F4F4F6;
-  color: #111113;
+  overflow-x: clip;
 }
 
 /* ── Components ───────────────────────────────────────────────────── */
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-deal-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-deal-600 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-deal-600 px-4 py-2.5 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
   }
+  .btn-primary:hover {
+    @apply bg-deal-700;
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 px-4 py-2.5 text-sm font-medium text-ink-200 transition-colors hover:bg-ink-800 hover:text-white;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 px-4 py-2.5 text-sm font-medium text-ink-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
   }
+  .btn-ghost:hover {
+    @apply border-ink-600 bg-ink-900 text-ink-200;
+  }
+  
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-700 px-3 py-1 text-xs font-medium text-ink-200 transition-colors hover:border-ink-600 hover:bg-ink-800;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-700 px-3 py-1 text-xs font-medium text-ink-500 focus-visible:outline-none;
+  }
+  .chip:hover {
+    @apply border-ink-600 bg-ink-900;
   }
   .chip-active {
-    @apply border-deal-500 bg-deal-500/15 text-deal-400;
+    border-color: var(--color-deal-600);
+    background-color: rgba(255, 159, 28, 0.15);
+    color: var(--color-deal-500);
   }
+  
   .card {
-    @apply rounded-2xl border border-ink-800 bg-ink-900/60 shadow-card backdrop-blur-sm;
+    @apply rounded-2xl border border-ink-800;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
   }
   .deal-card {
-    @apply card flex flex-col gap-3 p-4 transition-all hover:border-ink-700 hover:-translate-y-0.5;
+    @apply card flex flex-col gap-3 p-4 transition-all duration-200 hover:border-ink-700 hover:-translate-y-0.5 hover:shadow-lg;
   }
+  
   .price-trend-up {
-    @apply text-deal-400;
+    color: var(--color-deal-800);
   }
   .price-trend-down {
-    @apply text-emerald-400;
+    color: #10b981;
   }
+  
   .status-badge {
     @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider;
   }
-  .status-active { @apply bg-emerald-500/15 text-emerald-400; }
-  .status-expiring { @apply bg-amber-500/15 text-amber-400; }
-  .status-expired { @apply bg-ink-700 text-ink-400 line-through; }
+  .status-active {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+  }
+  .status-expiring {
+    background-color: rgba(245, 158, 66, 0.15);
+    color: #fbbf24;
+  }
+  .status-expired {
+    background-color: var(--color-ink-700);
+    color: var(--color-ink-400);
+    text-decoration: line-through;
+  }
 }
 
 /* ── Skeleton shimmer ─────────────────────────────────────────────── */
 
 .skeleton {
-  background: linear-gradient(90deg, #1C1C21 0%, #26262D 50%, #1C1C21 100%);
+  background: linear-gradient(90deg, var(--color-ink-800) 0%, var(--color-ink-700) 50%, var(--color-ink-800) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
   border-radius: inherit;
 }
 
-/* ── Range slider (radius slider from benzin.jetzt) ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--color-ink-800);
+  }
+}
+
+/* ── Range slider (radius slider) ───────────────────────────────── */
 
 .range-input {
   -webkit-appearance: none;
@@ -81,7 +180,7 @@ html.light body {
   width: 100%;
   height: 4px;
   border-radius: 999px;
-  background: #26262D;
+  background: var(--color-ink-800);
   outline: none;
 }
 .range-input::-webkit-slider-thumb {
@@ -90,8 +189,8 @@ html.light body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #FF9F1C;
-  border: 2px solid #111113;
+  background: var(--color-deal-600);
+  border: 2px solid var(--color-ink-950);
   cursor: pointer;
   box-shadow: 0 0 0 1px rgba(255, 159, 28, 0.4);
 }
@@ -99,16 +198,23 @@ html.light body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #FF9F1C;
-  border: 2px solid #111113;
+  background: var(--color-deal-600);
+  border: 2px solid var(--color-ink-950);
   cursor: pointer;
 }
 
-/* ── Scrollbar ────────────────────────────────────────────────────── */
+/* ── Scrollbar ───────────────────────────────────────────────────── */
 
-.scroll-thin::-webkit-scrollbar { width: 6px; }
-.scroll-thin::-webkit-scrollbar-thumb { background: #33333C; border-radius: 999px; }
-.scroll-thin::-webkit-scrollbar-track { background: transparent; }
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--color-ink-700);
+  border-radius: 999px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
 
 /* ── Reveal-on-scroll ─────────────────────────────────────────────── */
 
@@ -120,4 +226,14 @@ html.light body {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

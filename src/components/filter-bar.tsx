@@ -50,10 +50,10 @@ export function FilterBar({
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-600"
           >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
@@ -62,7 +62,7 @@ export function FilterBar({
             value={query.q ?? ''}
             onChange={(e) => onQuery({ q: e.target.value })}
             placeholder="Search deals, brands, stores…"
-            className="w-full rounded-xl border border-ink-700 bg-ink-900/60 py-2.5 pl-9 pr-3 text-sm text-ink-100 placeholder:text-ink-500 focus:border-deal-500 focus:outline-none focus:ring-1 focus:ring-deal-500"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/60 py-2.5 pl-9 pr-3 text-sm text-ink-100 placeholder:text-ink-500 focus:border-deal-600 focus:outline-none focus:ring-1 focus:ring-deal-600"
           />
         </div>
 
@@ -75,13 +75,11 @@ export function FilterBar({
                 key={s.id}
                 onClick={() => {
                   const set = new Set(query.stores ?? []);
-                  if (active) set.delete(s.id); else set.add(s.id);
+                  if (active) set.delete(s.id);
+                  else set.add(s.id);
                   onQuery({ stores: set.size ? Array.from(set) as StoreId[] : undefined });
                 }}
-                className={cn(
-                  'chip',
-                  active && 'chip-active',
-                )}
+                className={cn('chip', active && 'chip-active')}
                 style={{ borderColor: s.color + '55', color: s.color }}
               >
                 {s.shortName}
@@ -100,7 +98,9 @@ export function FilterBar({
               onClick={() => onQuery({ sort: s.key })}
               className={cn(
                 'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
-                query.sort === s.key ? 'bg-deal-500 text-white' : 'text-ink-300 hover:bg-ink-800',
+                query.sort === s.key
+                  ? 'bg-deal-600 text-ink-100'
+                  : 'text-ink-500 hover:bg-ink-800 hover:text-ink-100',
               )}
             >
               {s.label}
@@ -108,15 +108,17 @@ export function FilterBar({
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-ink-400">
+        <div className="flex items-center gap-2 text-xs text-ink-500">
           <span>₹</span>
           <input
             type="number"
             placeholder="Min"
             value={query.minPrice ?? ''}
             min={0}
-            onChange={(e) => onQuery({ minPrice: e.target.value ? Number(e.target.value) : undefined })}
-            className="w-20 rounded-lg border border-ink-700 bg-ink-900/60 px-2 py-1.5 text-ink-100 focus:border-deal-500 focus:outline-none"
+            onChange={(e) =>
+              onQuery({ minPrice: e.target.value ? Number(e.target.value) : undefined })
+            }
+            className="w-20 rounded-lg border border-ink-700 bg-ink-900/60 px-2 py-1.5 text-ink-100 focus:border-deal-600 focus:outline-none"
           />
           <span>–</span>
           <input
@@ -124,8 +126,10 @@ export function FilterBar({
             placeholder="Max"
             value={query.maxPrice ?? ''}
             min={0}
-            onChange={(e) => onQuery({ maxPrice: e.target.value ? Number(e.target.value) : undefined })}
-            className="w-20 rounded-lg border border-ink-700 bg-ink-900/60 px-2 py-1.5 text-ink-100 focus:border-deal-500 focus:outline-none"
+            onChange={(e) =>
+              onQuery({ maxPrice: e.target.value ? Number(e.target.value) : undefined })
+            }
+            className="w-20 rounded-lg border border-ink-700 bg-ink-900/60 px-2 py-1.5 text-ink-100 focus:border-deal-600 focus:outline-none"
           />
         </div>
 
@@ -137,7 +141,8 @@ export function FilterBar({
                 key={t.key}
                 onClick={() => {
                   const set = new Set(query.tags ?? []);
-                  if (active) set.delete(t.key); else set.add(t.key);
+                  if (active) set.delete(t.key);
+                  else set.add(t.key);
                   onQuery({ tags: set.size ? Array.from(set) as DealTag[] : undefined });
                 }}
                 className={cn('chip', active && 'chip-active')}
@@ -151,7 +156,7 @@ export function FilterBar({
         {hasFilters && (
           <button
             onClick={onClear}
-            className="ml-auto flex items-center gap-1 text-xs text-ink-400 hover:text-white"
+            className="ml-auto flex items-center gap-1 text-xs text-ink-500 hover:text-ink-100"
           >
             <X className="h-3.5 w-3.5" /> Clear all
           </button>

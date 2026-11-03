@@ -5,40 +5,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        // benzin.jetzt-inspired dark palette
+        // Map CSS variables to Tailwind classes
         ink: {
-          950: '#0A0A0B',
-          900: '#111113',
-          850: '#16161A',
-          800: '#1C1C21',
-          700: '#26262D',
-          600: '#33333C',
-          500: '#4A4A55',
-          400: '#6E6E7A',
-          300: '#9A9AA6',
-          200: '#C6C6CE',
-          100: '#E8E8EC',
+          100: 'var(--color-ink-100)',
+          200: 'var(--color-ink-200)',
+          300: 'var(--color-ink-300)',
+          400: 'var(--color-ink-400)',
+          500: 'var(--color-ink-500)',
+          600: 'var(--color-ink-600)',
+          700: 'var(--color-ink-700)',
+          800: 'var(--color-ink-800)',
+          900: 'var(--color-ink-900)',
+          950: 'var(--color-ink-950)',
         },
         deal: {
-          // warm orange → yellow accent (Muddapappu brand)
-          50: '#FFF9E8',
-          100: '#FFF3D0',
-          200: '#FFE49E',
-          300: '#FFD166',
-          400: '#FFB627',
-          500: '#FF9F1C',
-          600: '#F77F00',
-          700: '#D96800',
-          800: '#B34E00',
-          900: '#8A3B00',
+          100: 'var(--color-deal-100)',
+          200: 'var(--color-deal-200)',
+          300: 'var(--color-deal-300)',
+          400: 'var(--color-deal-400)',
+          500: 'var(--color-deal-500)',
+          600: 'var(--color-deal-600)',
+          700: 'var(--color-deal-700)',
+          800: 'var(--color-deal-800)',
+          900: 'var(--color-deal-900)',
         },
       },
       fontFamily: {
-        sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-bricolage)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 0 0 rgba(255,255,255,0.03) inset, 0 8px 24px -12px rgba(0,0,0,0.6)',
+        card: 'var(--shadow-card)',
+        lg: 'var(--shadow-lg)',
       },
       keyframes: {
         'fade-up': {
