@@ -2,53 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Hallmark Redesign: Modern, Simple Design ──────────────────────── */
-/* All colors defined as tokens at :root, no literal colors used elsewhere */
+/* ── Premium Developer Marketplace Theme (Claude Code Templates inspired) ── */
+/* Dark developer-focused interface with sophisticated SaaS dashboard aesthetic */
 
 :root {
-  /* Typography */
+  /* Typography - JetBrains Mono for terminal feel, Inter for UI */
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
 
-  /* Light mode palette - dark text on light bg */
-  --color-bg: #0A0A0B;
-  --color-surface: #111113;
-  --color-surface-2: #16161A;
-  --color-border: #26262D;
-  --color-border-2: #33333C;
-  --color-text: #E8E8EC;
-  --color-text-muted: #9A9AA6;
-  --color-text-secondary: #6E6E7A;
+  /* Color palette matching premium developer dashboard */
+  --color-bg: #0D1117;
+  --color-header: #161B22;
+  --color-card: #161B22;
+  --color-card-hover: #21262D;
+  --color-border: #30363D;
+  --color-text: #C9D1D9;
+  --color-text-muted: #8B949E;
+  --color-text-secondary: #6E7681;
+  --color-accent-green: #2EA043;
+  --color-accent-orange: #E07850;
 
-  /* Accent colors - neon/sureny highlights */
-  --color-accent-primary: #FF9F1C; /* Orange - main brand */
-  --color-accent-primary-hover: #FFB627;
-  --color-accent-secondary: #00E5FF; /* Cyan - for highlights */
-  --color-accent-success: #00FF88; /* Neon green - for success */
-  --color-accent-warning: #FFEB3B; /* Neon yellow - for warnings */
-  --color-accent-danger: #FF5252; /* Red - for danger */
+  /* Shadows for depth */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px -1px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  /* Font sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
 }
 
-/* Dark mode - light text on dark bg (opposite of light mode) */
+/* Light mode - opposite colors */
 html.light {
-  --color-bg: #F4F4F6;
-  --color-surface: #FFFFFF;
-  --color-surface-2: #F4F4F6;
+  --color-bg: #FFFFFF;
+  --color-header: #F4F4F6;
+  --color-card: #FFFFFF;
+  --color-card-hover: #F4F4F6;
   --color-border: #E8E8EC;
-  --color-border-2: #C6C6CE;
   --color-text: #111113;
   --color-text-muted: #4A4A55;
   --color-text-secondary: #6E6E7A;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 body {
@@ -64,98 +72,99 @@ body {
 /* ── Components ───────────────────────────────────────────────────── */
 
 @layer components {
+  /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent-primary)] px-4 py-2.5 text-sm font-semibold text-[var(--color-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-orange focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
   }
-  .btn-primary:hover {
-    background-color: var(--color-accent-primary-hover);
+  .btn-primary:not([disabled]) {
+    cursor: pointer;
   }
-  .btn-primary:active {
-    transform: scale(0.98);
+  .btn-primary[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-2.5 text-sm font-medium text-[var(--color-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] transition-colors duration-200;
-  }
-  .btn-ghost:hover {
-    background-color: var(--color-surface-2);
-    border-color: var(--color-border-2);
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-orange focus-visible:ring-offset-2;
   }
 
+  /* Chips/Tags */
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-xs font-medium text-[var(--color-text)] focus-visible:outline-none transition-colors duration-200;
-  }
-  .chip:hover {
-    background-color: var(--color-surface-2);
-    border-color: var(--color-border-2);
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 focus-visible:outline-none;
   }
   .chip-active {
-    border-color: var(--color-accent-primary);
     background-color: rgba(255, 159, 28, 0.15);
-    color: var(--color-accent-primary);
+    color: var(--color-accent-orange);
+    border-color: var(--color-accent-orange);
   }
 
+  /* Cards */
   .card {
-    @apply rounded-2xl border border-[var(--color-border)] shadow-md backdrop-blur-sm;
+    @apply rounded-xl border transition-all duration-200 backdrop-blur-sm;
   }
 
+  /* Header */
+  .header {
+    @apply sticky top-0 z-40 border-b w-full;
+  }
+
+  /* Status badges */
+  .status-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold uppercase tracking-wider;
+  }
+  .status-live {
+    @apply bg-accent-green/15 text-accent-green;
+  }
+  .status-expiring {
+    @apply bg-orange-500/15 text-orange-400;
+  }
+  .status-expired {
+    @apply bg-gray-500/15 text-gray-400;
+  }
+
+  /* Deal cards */
   .deal-card {
     @apply card flex flex-col gap-3 p-4 transition-all duration-200;
   }
   .deal-card:hover {
-    border-color: rgba(255, 159, 28, 0.4);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    background-color: var(--color-card-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
   }
 
-  .deal-card-gallery {
-    @apply card flex flex-col p-2 transition-all duration-200 hover:shadow-lg;
+  /* Category buttons */
+  .category-btn {
+    @apply inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 focus-visible:outline-none;
   }
-
-  .price-trend-up {
-    color: var(--color-accent-success);
-  }
-  .price-trend-down {
-    color: var(--color-accent-success);
-  }
-
-  .status-badge {
-    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider;
-  }
-  .status-active {
-    background-color: rgba(0, 229, 255, 0.2);
-    color: var(--color-accent-secondary);
-  }
-  .status-expiring {
-    background-color: rgba(255, 235, 59, 0.2);
-    color: var(--color-accent-warning);
-  }
-  .status-expired {
-    background-color: var(--color-border);
-    color: var(--color-text-muted);
-    text-decoration: line-through;
-  }
-
-  .theme-toggle {
-    @apply grid place-items-center rounded-xl p-2 text-[var(--color-text)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2;
-  }
-
-  .view-toggle {
-    @apply flex items-center gap-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-1 transition-colors duration-200;
-  }
-  .view-toggle button {
-    @apply rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200;
-  }
-  .view-toggle button.active {
-    background-color: var(--color-accent-primary);
+  .category-btn.active {
+    background-color: var(--color-accent-orange);
     color: var(--color-bg);
+  }
+  .category-btn:not(.active) {
+    background-color: var(--color-card);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+  .category-btn:not(.active):hover {
+    background-color: var(--color-card-hover);
   }
 }
 
-/* ── Skeleton shimmer ─────────────────────────────────────────────── */
+/* ── Search Input Style ───────────────────────────────────────────── */
+
+.search-input {
+  @apply w-full rounded-xl border px-4 py-2.5 text-sm focus:outline-none;
+  @apply bg-card border-border text-text placeholder:text-text-muted;
+}
+.search-input:focus {
+  border-color: var(--color-accent-orange);
+  box-shadow: 0 0 0 1px var(--color-accent-orange);
+}
+
+/* ── Skeleton Shimmer ─────────────────────────────────────────────── */
 
 .skeleton {
-  background: linear-gradient(90deg, var(--color-surface-2) 0%, var(--color-border) 50%, var(--color-surface-2) 100%);
+  background: linear-gradient(90deg, #21262D 0%, #30363D 50%, #21262D 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
   border-radius: inherit;
@@ -164,60 +173,26 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none;
-    background: var(--color-surface-2);
+    background: #21262D;
   }
 }
 
-/* ── Range slider (radius slider) ───────────────────────────────── */
+/* ── Animations ───────────────────────────────────────────────────── */
 
-.range-input {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--color-border);
-  outline: none;
-}
-.range-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-accent-primary);
-  border: 2px solid var(--color-bg);
-  cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(255, 159, 28, 0.4);
-}
-.range-input::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-accent-primary);
-  border: 2px solid var(--color-bg);
-  cursor: pointer;
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
 }
 
-/* ── Scrollbar ───────────────────────────────────────────────────── */
-
-.scroll-thin::-webkit-scrollbar {
-  width: 6px;
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.scroll-thin::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 999px;
-}
-.scroll-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* ── Reveal-on-scroll ─────────────────────────────────────────────── */
 
 .reveal {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  animation: fadeInUp 0.4s ease both;
 }
 .reveal.is-visible {
   opacity: 1;
@@ -226,7 +201,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
-    transition: none;
+    animation: none;
   }
   .reveal.is-visible {
     opacity: 1;

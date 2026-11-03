@@ -5,37 +5,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Map CSS variables to Tailwind classes
-        ink: {
-          100: 'var(--color-ink-100)',
-          200: 'var(--color-ink-200)',
-          300: 'var(--color-ink-300)',
-          400: 'var(--color-ink-400)',
-          500: 'var(--color-ink-500)',
-          600: 'var(--color-ink-600)',
-          700: 'var(--color-ink-700)',
-          800: 'var(--color-ink-800)',
-          900: 'var(--color-ink-900)',
-          950: 'var(--color-ink-950)',
-        },
-        deal: {
-          100: 'var(--color-deal-100)',
-          200: 'var(--color-deal-200)',
-          300: 'var(--color-deal-300)',
-          400: 'var(--color-deal-400)',
-          500: 'var(--color-deal-500)',
-          600: 'var(--color-deal-600)',
-          700: 'var(--color-deal-700)',
-          800: 'var(--color-deal-800)',
-          900: 'var(--color-deal-900)',
-        },
+        // Map CSS variables to Tailwind classes for convenience
+        bg: 'var(--color-bg)',
+        'color-bg': 'var(--color-bg)',
+        header: 'var(--color-header)',
+        card: 'var(--color-card)',
+        'card-hover': 'var(--color-card-hover)',
+        border: 'var(--color-border)',
+        text: 'var(--color-text)',
+        'text-muted': 'var(--color-text-muted)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'accent-green': 'var(--color-accent-green)',
+        'accent-orange': 'var(--color-accent-orange)',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: 'var(--shadow-card)',
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
         lg: 'var(--shadow-lg)',
       },
       keyframes: {

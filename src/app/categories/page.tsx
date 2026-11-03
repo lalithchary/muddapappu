@@ -13,12 +13,12 @@ export default async function CategoriesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold sm:text-3xl">
-          Browse by <span className="text-deal-500">Category</span>
+    <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="mb-8 text-center">
+        <h1 className="font-display text-3xl font-bold text-text sm:text-4xl">
+          Browse by <span className="text-accent-orange">Category</span>
         </h1>
-        <p className="mt-1 text-sm text-ink-400">
+        <p className="mt-2 text-sm text-text-muted">
           Filter deals by category, store, or deal type.
         </p>
       </div>
@@ -30,39 +30,40 @@ export default async function CategoriesPage() {
             <Link
               key={c.id}
               href={`/?cat=${c.id}`}
-              className="card flex items-center gap-4 p-5 transition-colors hover:border-ink-700"
+              className="deal-card group hover:shadow-md"
             >
-              <div className="grid place-items-center rounded-2xl bg-ink-800 p-3 text-2xl">
-                {c.icon}
+              <div className="flex items-center gap-4">
+                <div className="grid place-items-center rounded-xl bg-card-hover p-3 text-2xl">
+                  {c.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-text">{c.label}</h3>
+                  <p className="text-xs text-text-muted">
+                    {count} active deal{count === 1 ? '' : 's'} • {c.stores.length} store{c.stores.length === 1 ? '' : 's'}
+                  </p>
+                </div>
+                <span className="text-text-muted transition-transform group-hover:translate-x-1">→</span>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold">{c.label}</h3>
-                <p className="text-xs text-ink-400">
-                  {count} active deal{count === 1 ? '' : 's'} • {c.stores.length} store{c.stores.length === 1 ? '' : 's'}
-                </p>
-              </div>
-              <span className="text-ink-500">→</span>
             </Link>
           );
         })}
       </div>
 
-      <div className="mt-10">
-        <h2 className="mb-3 text-sm font-semibold text-ink-100">Shop by store</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mt-12">
+        <h2 className="mb-4 text-sm font-semibold text-text uppercase tracking-wider">Shop by store</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {Object.values(STORES).map((s) => (
             <Link
               key={s.id}
               href={`/?store=${s.id}`}
-              className="card flex items-center gap-3 p-4 transition-colors hover:border-ink-700"
+              className="card flex items-center gap-3 p-3 text-sm transition-all hover:shadow-sm"
             >
               <span
-                className="h-3 w-3 rounded-full"
+                className="h-2 w-2 rounded-full"
                 style={{ background: s.color }}
               />
               <div>
-                <div className="text-sm font-semibold">{s.name}</div>
-                <div className="text-[10px] text-ink-500">{s.category}</div>
+                <div className="font-medium text-text">{s.shortName}</div>
               </div>
             </Link>
           ))}

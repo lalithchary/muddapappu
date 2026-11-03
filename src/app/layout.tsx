@@ -42,15 +42,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${bricolage.variable} dark`}
+      className={`${dmSans.variable} ${bricolage.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-ink-950 font-sans text-ink-100 antialiased">
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+      <body className="min-h-screen flex flex-col bg-bg text-text antialiased">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

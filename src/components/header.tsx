@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu, Moon, Sun, ShoppingBag } from 'lucide-react';
+import { Menu, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -26,8 +26,6 @@ export function Header() {
       setLight(isLight);
       if (isLight) {
         document.documentElement.classList.add('light');
-      } else {
-        document.documentElement.classList.remove('light');
       }
     } catch {}
   }, []);
@@ -46,18 +44,22 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-surface)]/80">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
-        <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold">
-          <span className="grid place-items-center overflow-hidden rounded-full bg-white/5 p-1 ring-1 ring-[var(--color-accent-primary)]/30">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.svg" alt="Muddapappu" className="h-9 w-9 object-contain" />
-          </span>
-          <span>
-            Mudda<span className="text-[var(--color-accent-primary)]">pappu</span>
-          </span>
+    <header className="header border-b border-[var(--color-border)] bg-header">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
+        {/* Logo/Brand */}
+        <Link href="/" className="flex items-center gap-3 font-display text-xl font-bold">
+          <div className="h-8 w-8 rounded-lg bg-accent-orange flex items-center justify-center">
+            <span className="text-xs font-mono">M</span>
+          </div>
+          <div>
+            <div className="text-sm text-text-muted">Muddapappu</div>
+            <div className="text-xs text-text-secondary">
+              Best Deals in India
+            </div>
+          </div>
         </Link>
 
+        {/* Navigation - Desktop */}
         <nav className="hidden items-center gap-1 sm:flex">
           {NAV.map((n) => {
             const active = pathname === n.href;
@@ -67,7 +69,9 @@ export function Header() {
                 href={n.href}
                 className={cn(
                   'rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-                  active ? 'bg-[var(--color-accent-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text)] hover:bg-[var(--color-surface-2)]',
+                  active
+                    ? 'bg-accent-orange text-bg'
+                    : 'text-text hover:bg-card-hover',
                 )}
               >
                 {n.label}
@@ -76,25 +80,31 @@ export function Header() {
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-1">
+        {/* Action buttons */}
+        <div className="ml-auto flex items-center gap-2">
+          {/* Store link */}
           <Link
             href="/"
-            className="hidden items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-2)] sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-text-muted transition-colors hover:bg-card-hover sm:inline-flex"
           >
-            <ShoppingBag className="h-4 w-4" />
-            All Stores
+            <span>🔍</span>
+            <span>All Stores</span>
           </Link>
+
+          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
-            className="theme-toggle"
+            className="grid place-items-center rounded-lg p-2 text-text transition-colors hover:bg-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-orange"
           >
             {light ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
+
+          {/* Mobile menu */}
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Open menu"
-            className="theme-toggle sm:hidden"
+            className="grid place-items-center rounded-lg p-2 text-text sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-orange"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -103,7 +113,7 @@ export function Header() {
 
       {/* Mobile nav */}
       {open && (
-        <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:hidden">
+        <div className="border-t border-[var(--color-border)] bg-header px-4 py-3 sm:hidden">
           <nav className="flex flex-col gap-1">
             {NAV.map((n) => (
               <Link
@@ -112,7 +122,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className={cn(
                   'rounded-lg px-3 py-2 text-sm',
-                  pathname === n.href ? 'bg-[var(--color-accent-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text)]',
+                  pathname === n.href ? 'bg-accent-orange text-bg' : 'text-text',
                 )}
               >
                 {n.label}
@@ -120,11 +130,7 @@ export function Header() {
             ))}
             <div className="mt-2 flex flex-wrap gap-2">
               {STORE_LIST.map((s) => (
-                <span
-                  key={s.id}
-                  className="chip"
-                  style={{ borderColor: s.color + '55', color: s.color }}
-                >
+                <span key={s.id} className="chip" style={{ borderColor: s.color + '55', color: s.color }}>
                   {s.shortName}
                 </span>
               ))}

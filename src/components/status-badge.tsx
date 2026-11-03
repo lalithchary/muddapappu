@@ -7,14 +7,8 @@ const LABELS: Record<Status, string> = {
   expired: 'Expired',
 };
 
-const CLASSES: Record<Status, string> = {
-  active: 'status-active',
-  expiring: 'status-expiring',
-  expired: 'status-expired',
-};
-
 export function StatusBadge({ status }: { status: Status }) {
-  return <span className={cn('status-badge', CLASSES[status])}>{LABELS[status]}</span>;
+  return <span className={cn('status-badge', `status-${status}`)}>{LABELS[status]}</span>;
 }
 
 export function formatCountdown(seconds: number): string {
