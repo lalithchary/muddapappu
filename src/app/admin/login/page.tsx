@@ -1,17 +1,19 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { ADMIN_PASSWORD } from '@/lib/admin-auth';
 
 export default async function AdminLogin() {
   const cookie = (await cookies()).get('admin_session');
-  if (cookie && cookie.value === process.env.ADMIN_PASSWORD) {
+  const isValid = cookie && cookie.value === ADMIN_PASSWORD;
+  if (isValid) {
     redirect('/admin');
   }
 
   async function loginAction(formData: FormData): Promise<void> {
     'use server';
     const password = String(formData.get('password') || '');
-    const expected = process.env.ADMIN_PASSWORD;
+    const expected = ADMIN_PASSWORD;
     if (expected && password === expected) {
       const { cookies } = await import('next/headers');
       (await cookies()).set('admin_session', expected, {
@@ -38,7 +40,7 @@ export default async function AdminLogin() {
         <button type="submit" className="btn-primary w-full">Sign in</button>
       </form>
       <p className="mt-3 text-xs text-ink-600">
-        Default password is set in <code>.env.local</code> as <code>ADMIN_PASSWORD</code>.
+        Password is set in <code>.env.local</code> as <code>ADMIN_PASSWORD</code>.
       </p>
     </div>
   );
