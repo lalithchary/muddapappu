@@ -2,8 +2,8 @@ name: Sync Cuelinks Deals
 
 on:
   schedule:
-    # Run daily at 2:00 AM UTC (7:30 AM IST)
-    - cron: '0 2 * * *'
+    # Run every 5 minutes for near-real-time deal updates
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     # Allow manual trigger from GitHub Actions UI
 
