@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -46,6 +48,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin
+          git rebase origin/main || true
           git add data/store/deals.json data/store/coupons.json data/store/comments.json
           git commit -m "Sync Cuelinks deals - auto"
-          git push
+          git push origin main
