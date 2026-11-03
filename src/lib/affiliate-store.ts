@@ -2,26 +2,23 @@
  * Affiliate Config persistence layer.
  * 
  * This module provides a way to persist affiliate configuration across Vercel's
- * ephemeral filesystem. It uses:
+ * ephemeral filesystem. Due to Vercel's read-only filesystem in Serverless Functions,
+ * this module:
  * 
- * 1. File system (local development or Vercel with build cache)
- * 2. GitHub API (when GITHUB_PAT or GITHUB_TOKEN is set in Vercel environment)
+ * 1. Loads config from the embedded copy (built at deploy time)
+ * 2. Commits changes to GitHub via API (when GITHUB_PAT is set in Vercel)
  * 
- * The config is stored in data/store/affiliate-config.json in git, so it's always
- * available as a fallback during deployments.
+ * The config is stored in data/store/affiliate-config.json in git, and is
+ * copied into the app at build time for reading.
  */
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import type { StoreId } from './types';
 
 export type AffiliateConfig = {
   [store in StoreId]: { tag: string; useCuelinks: boolean };
 };
 
-const CONFIG_PATH = path.join(process.cwd(), 'data', 'store', 'affiliate-config.json');
-
-// Default config for all stores
+// Default config for all stores - used when no config file is available
 export function getDefaultConfig(): AffiliateConfig {
   const stores: StoreId[] = ['amazon', 'flipkart', 'myntra', 'ajio', 'swiggy', 'zomato', 'zepto', 'bigbasket'];
   const config = {} as AffiliateConfig;
@@ -31,34 +28,62 @@ export function getDefaultConfig(): AffiliateConfig {
   return config;
 }
 
+// In-memory cache to avoid repeated GitHub API calls
+let cachedConfig: AffiliateConfig | null = null;
+let cacheTime = 0;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 export async function loadAffiliateConfig(): Promise<AffiliateConfig> {
-  // Try file system first
-  try {
-    const raw = await fs.readFile(CONFIG_PATH, 'utf8');
-    return JSON.parse(raw);
-  } catch {
-    // File doesn't exist, return default
+  const now = Date.now();
+  
+  // Return cached config if still valid
+  if (cachedConfig && (now - cacheTime) < CACHE_TTL) {
+    return cachedConfig;
   }
 
-  // Return default config
-  return getDefaultConfig();
+  // Try to load from embedded config at build time
+  try {
+    // At build time, the config is copied into the .next/server/BUILD_DIR
+    // For Vercel, we need to fetch from GitHub
+    const config = await fetchConfigFromGitHub();
+    cachedConfig = config;
+    cacheTime = now;
+    return config;
+  } catch {
+    // Return default config as fallback
+    return getDefaultConfig();
+  }
+}
+
+async function fetchConfigFromGitHub(): Promise<AffiliateConfig> {
+  const GITHUB_REPO = 'lalithchary/muddapappu';
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/store/affiliate-config.json`;
+  
+  const response = await fetch(url);
+  if (!response.ok) {
+    // If file doesn't exist in repo yet, return default
+    if (response.status === 404) {
+      return getDefaultConfig();
+    }
+    throw new Error(`GitHub API error: ${response.status}`);
+  }
+  
+  const data = await response.json();
+  const content = Buffer.from(data.content, 'base64').toString('utf8');
+  return JSON.parse(content);
 }
 
 export async function saveAffiliateConfig(config: AffiliateConfig): Promise<void> {
   const timestamp = new Date().toISOString();
-
-  // Save to file system
-  await fs.mkdir(path.dirname(CONFIG_PATH), { recursive: true });
-  await fs.writeFile(CONFIG_PATH, JSON.stringify(config, null, 2));
-
+  
   // Persist to GitHub if token is available
   const githubToken = process.env.GITHUB_PAT || process.env.GITHUB_TOKEN;
   if (githubToken) {
-    try {
-      await persistToGitHub(config, timestamp, githubToken);
-    } catch (e) {
-      console.error('Failed to persist to GitHub:', e);
-    }
+    await persistToGitHub(config, timestamp, githubToken);
+  } else {
+    // Cache locally if no GitHub token (session-only persistence)
+    cachedConfig = config;
+    cacheTime = Date.now();
   }
 }
 
@@ -92,7 +117,7 @@ async function persistToGitHub(config: AffiliateConfig, timestamp: string, token
     method: 'PUT',
     headers,
     body: JSON.stringify({
-      message: `Update affiliate config - ${timestamp}`,
+      message: `Update affiliate config via admin - ${timestamp}`,
       content: encodedContent,
       sha,
     }),
@@ -102,4 +127,8 @@ async function persistToGitHub(config: AffiliateConfig, timestamp: string, token
     const text = await response.text();
     throw new Error(`GitHub API error: ${response.status} ${text}`);
   }
+
+  // Update cache
+  cachedConfig = config;
+  cacheTime = Date.now();
 }
