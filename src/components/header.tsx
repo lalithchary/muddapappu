@@ -22,11 +22,11 @@ export function Header() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem('muddapappu-theme');
-      if (saved === 'light') {
-        setLight(true);
+      const isLight = saved === 'light' || (!saved && window.matchMedia('(prefers-color-scheme: light)').matches);
+      setLight(isLight);
+      if (isLight) {
         document.documentElement.classList.add('light');
       } else {
-        setLight(false);
         document.documentElement.classList.remove('light');
       }
     } catch {}
@@ -46,15 +46,15 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-800 bg-ink-950/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-surface)]/80">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
         <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold">
-          <span className="grid place-items-center overflow-hidden rounded-full bg-white/5 p-1 ring-1 ring-deal-500/30">
+          <span className="grid place-items-center overflow-hidden rounded-full bg-white/5 p-1 ring-1 ring-[var(--color-accent-primary)]/30">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.svg" alt="Muddapappu" className="h-9 w-9 object-contain" />
           </span>
           <span>
-            Mudda<span className="text-deal-600">pappu</span>
+            Mudda<span className="text-[var(--color-accent-primary)]">pappu</span>
           </span>
         </Link>
 
@@ -67,7 +67,7 @@ export function Header() {
                 href={n.href}
                 className={cn(
                   'rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-                  active ? 'bg-ink-800 text-ink-100' : 'text-ink-500 hover:bg-ink-800 hover:text-ink-100',
+                  active ? 'bg-[var(--color-accent-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text)] hover:bg-[var(--color-surface-2)]',
                 )}
               >
                 {n.label}
@@ -79,7 +79,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-1">
           <Link
             href="/"
-            className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-2)] sm:inline-flex"
           >
             <ShoppingBag className="h-4 w-4" />
             All Stores
@@ -87,14 +87,14 @@ export function Header() {
           <button
             onClick={toggleTheme}
             aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
-            className="grid place-items-center rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2"
+            className="theme-toggle"
           >
             {light ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Open menu"
-            className="grid place-items-center rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2"
+            className="theme-toggle sm:hidden"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -103,7 +103,7 @@ export function Header() {
 
       {/* Mobile nav */}
       {open && (
-        <div className="border-t border-ink-800 bg-ink-950 px-4 py-3 sm:hidden">
+        <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:hidden">
           <nav className="flex flex-col gap-1">
             {NAV.map((n) => (
               <Link
@@ -112,7 +112,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className={cn(
                   'rounded-lg px-3 py-2 text-sm',
-                  pathname === n.href ? 'bg-ink-800 text-ink-100' : 'text-ink-500',
+                  pathname === n.href ? 'bg-[var(--color-accent-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text)]',
                 )}
               >
                 {n.label}

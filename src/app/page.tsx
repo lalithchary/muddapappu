@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Link from 'next/link';
 import { repo } from '@/lib/repo-instance';
 import { applyQuery } from '@/lib/repo';
 import type { DealQuery, StoreId, SortKey, DealTag } from '@/lib/types';
@@ -6,6 +7,7 @@ import { FilterBarWrapper } from '@/components/filter-bar-wrapper';
 import { DealCard } from '@/components/deal-card';
 import { EmptyState } from '@/components/empty-state';
 import { Pagination } from '@/components/pagination';
+import { ViewToggle } from '@/components/view-toggle';
 
 function parseQuery(searchParams: Record<string, string | string[] | undefined>): DealQuery {
   const get = (k: string): string | undefined => {
@@ -61,17 +63,17 @@ export default async function DealsPage({
   return (
     <>
       {/* Tab navigation */}
-      <nav className="mb-6 flex border-b border-ink-800 pb-px" aria-label="Sections">
+      <nav className="mb-6 flex border-b border-[var(--color-border)] pb-px" aria-label="Sections">
         <a
           href="/"
-          className="border-b-2 border-deal-600 px-4 py-2 text-sm font-semibold text-white"
+          className="border-b-2 border-[var(--color-accent-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)]"
           aria-current="page"
         >
           Deals
         </a>
         <a
           href="/community"
-          className="border-b-2 border-transparent px-4 py-2 text-sm text-ink-500 hover:text-white transition-colors"
+          className="border-b-2 border-transparent px-4 py-2 text-sm text-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors"
         >
           Community Chat
         </a>
@@ -80,23 +82,27 @@ export default async function DealsPage({
       {/* Hero section */}
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold sm:text-3xl">
-          Best <span className="text-deal-600">Deals</span> in India
+          Best <span className="text-[var(--color-accent-primary)]">Deals</span> in India
         </h1>
-        <p className="mt-1 text-sm text-ink-600">
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
           Live price tracking across Amazon, Flipkart, Myntra, Ajio & food delivery apps.
         </p>
       </div>
 
       <FilterBarWrapper initialQuery={query} />
 
-      {/* Results section */}
-      <div className="mt-6">
-        <p className="mb-3 text-xs text-ink-600">
+      {/* View toggle */}
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-sm text-[var(--color-text-secondary)]">
           {filtered.length} deal{filtered.length === 1 ? '' : 's'} found
         </p>
-        {pageItems.length === 0 ? (
-          <EmptyState query={query} />
-        ) : (
+        <ViewToggle />
+      </div>
+
+      {pageItems.length === 0 ? (
+        <EmptyState query={query} />
+      ) : (
+        <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {pageItems.map((deal) => (
               <Suspense key={deal.id} fallback={<div className="deal-card h-64 animate-pulse" />}>
@@ -104,8 +110,8 @@ export default async function DealsPage({
               </Suspense>
             ))}
           </div>
-        )}
-      </div>
+        </>
+      )}
 
       {filtered.length > PAGE_SIZE && (
         <Pagination

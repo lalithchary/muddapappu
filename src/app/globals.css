@@ -2,76 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── SastaDeal theme (hallmark redesign) ──────────────────────────── */
-/* Color tokens defined at :root for both themes */
+/* ── Hallmark Redesign: Modern, Simple Design ──────────────────────── */
+/* All colors defined as tokens at :root, no literal colors used elsewhere */
 
 :root {
   /* Typography */
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-  
-  /* Light mode palette */
-  --color-ink-100: #111113;
-  --color-ink-200: #26262D;
-  --color-ink-300: #33333C;
-  --color-ink-400: #4A4A55;
-  --color-ink-500: #6E6E7A;
-  --color-ink-600: #9A9AA6;
-  --color-ink-700: #C6C6CE;
-  --color-ink-800: #E8E8EC;
-  --color-ink-900: #F4F4F6;
-  --color-ink-950: #FFFFFF;
-  
-  /* Deal accent - orange to yellow gradient */
-  --color-deal-100: #FFF9E8;
-  --color-deal-200: #FFF3D0;
-  --color-deal-300: #FFE49E;
-  --color-deal-400: #FFD166;
-  --color-deal-500: #FFB627;
-  --color-deal-600: #FF9F1C;
-  --color-deal-700: #F77F00;
-  --color-deal-800: #D96800;
-  --color-deal-900: #B34E00;
-  
-  /* Shadows */
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
 
-/* Dark mode palette */
-[data-theme="dark"],
-html.dark {
-  --color-ink-100: #0A0A0B;
-  --color-ink-200: #111113;
-  --color-ink-300: #16161A;
-  --color-ink-400: #1C1C21;
-  --color-ink-500: #26262D;
-  --color-ink-600: #33333C;
-  --color-ink-700: #4A4A55;
-  --color-ink-800: #6E6E7A;
-  --color-ink-900: #9A9AA6;
-  --color-ink-950: #E8E8EC;
-  
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  /* Light mode palette - dark text on light bg */
+  --color-bg: #0A0A0B;
+  --color-surface: #111113;
+  --color-surface-2: #16161A;
+  --color-border: #26262D;
+  --color-border-2: #33333C;
+  --color-text: #E8E8EC;
+  --color-text-muted: #9A9AA6;
+  --color-text-secondary: #6E6E7A;
+
+  /* Accent colors - neon/sureny highlights */
+  --color-accent-primary: #FF9F1C; /* Orange - main brand */
+  --color-accent-primary-hover: #FFB627;
+  --color-accent-secondary: #00E5FF; /* Cyan - for highlights */
+  --color-accent-success: #00FF88; /* Neon green - for success */
+  --color-accent-warning: #FFEB3B; /* Neon yellow - for warnings */
+  --color-accent-danger: #FF5252; /* Red - for danger */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
-/* Light mode palette */
-[data-theme="light"],
+/* Dark mode - light text on dark bg (opposite of light mode) */
 html.light {
-  --color-ink-100: #111113;
-  --color-ink-200: #26262D;
-  --color-ink-300: #33333C;
-  --color-ink-400: #4A4A55;
-  --color-ink-500: #6E6E7A;
-  --color-ink-600: #9A9AA6;
-  --color-ink-700: #C6C6CE;
-  --color-ink-800: #E8E8EC;
-  --color-ink-900: #F4F4F6;
-  --color-ink-950: #FFFFFF;
-  
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --color-bg: #F4F4F6;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F4F4F6;
+  --color-border: #E8E8EC;
+  --color-border-2: #C6C6CE;
+  --color-text: #111113;
+  --color-text-muted: #4A4A55;
+  --color-text-secondary: #6E6E7A;
 }
 
 html {
@@ -81,8 +53,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-ink-950);
-  color: var(--color-ink-100);
+  background: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -93,73 +65,97 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-deal-600 px-4 py-2.5 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent-primary)] px-4 py-2.5 text-sm font-semibold text-[var(--color-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] transition-colors duration-200;
   }
   .btn-primary:hover {
-    @apply bg-deal-700;
+    background-color: var(--color-accent-primary-hover);
   }
   .btn-primary:active {
     transform: scale(0.98);
   }
-  
+
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 px-4 py-2.5 text-sm font-medium text-ink-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-2.5 text-sm font-medium text-[var(--color-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] transition-colors duration-200;
   }
   .btn-ghost:hover {
-    @apply border-ink-600 bg-ink-900 text-ink-200;
+    background-color: var(--color-surface-2);
+    border-color: var(--color-border-2);
   }
-  
+
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-700 px-3 py-1 text-xs font-medium text-ink-500 focus-visible:outline-none;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-xs font-medium text-[var(--color-text)] focus-visible:outline-none transition-colors duration-200;
   }
   .chip:hover {
-    @apply border-ink-600 bg-ink-900;
+    background-color: var(--color-surface-2);
+    border-color: var(--color-border-2);
   }
   .chip-active {
-    border-color: var(--color-deal-600);
+    border-color: var(--color-accent-primary);
     background-color: rgba(255, 159, 28, 0.15);
-    color: var(--color-deal-500);
+    color: var(--color-accent-primary);
   }
-  
+
   .card {
-    @apply rounded-2xl border border-ink-800;
-    background-color: rgba(255, 255, 255, 0.6);
-    box-shadow: var(--shadow-card);
-    backdrop-filter: blur(10px);
+    @apply rounded-2xl border border-[var(--color-border)] shadow-md backdrop-blur-sm;
   }
+
   .deal-card {
-    @apply card flex flex-col gap-3 p-4 transition-all duration-200 hover:border-ink-700 hover:-translate-y-0.5 hover:shadow-lg;
+    @apply card flex flex-col gap-3 p-4 transition-all duration-200;
   }
-  
+  .deal-card:hover {
+    border-color: rgba(255, 159, 28, 0.4);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .deal-card-gallery {
+    @apply card flex flex-col p-2 transition-all duration-200 hover:shadow-lg;
+  }
+
   .price-trend-up {
-    color: var(--color-deal-800);
+    color: var(--color-accent-success);
   }
   .price-trend-down {
-    color: #10b981;
+    color: var(--color-accent-success);
   }
-  
+
   .status-badge {
     @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider;
   }
   .status-active {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: #10b981;
+    background-color: rgba(0, 229, 255, 0.2);
+    color: var(--color-accent-secondary);
   }
   .status-expiring {
-    background-color: rgba(245, 158, 66, 0.15);
-    color: #fbbf24;
+    background-color: rgba(255, 235, 59, 0.2);
+    color: var(--color-accent-warning);
   }
   .status-expired {
-    background-color: var(--color-ink-700);
-    color: var(--color-ink-400);
+    background-color: var(--color-border);
+    color: var(--color-text-muted);
     text-decoration: line-through;
+  }
+
+  .theme-toggle {
+    @apply grid place-items-center rounded-xl p-2 text-[var(--color-text)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2;
+  }
+
+  .view-toggle {
+    @apply flex items-center gap-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-1 transition-colors duration-200;
+  }
+  .view-toggle button {
+    @apply rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200;
+  }
+  .view-toggle button.active {
+    background-color: var(--color-accent-primary);
+    color: var(--color-bg);
   }
 }
 
 /* ── Skeleton shimmer ─────────────────────────────────────────────── */
 
 .skeleton {
-  background: linear-gradient(90deg, var(--color-ink-800) 0%, var(--color-ink-700) 50%, var(--color-ink-800) 100%);
+  background: linear-gradient(90deg, var(--color-surface-2) 0%, var(--color-border) 50%, var(--color-surface-2) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
   border-radius: inherit;
@@ -168,7 +164,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none;
-    background: var(--color-ink-800);
+    background: var(--color-surface-2);
   }
 }
 
@@ -180,7 +176,7 @@ body {
   width: 100%;
   height: 4px;
   border-radius: 999px;
-  background: var(--color-ink-800);
+  background: var(--color-border);
   outline: none;
 }
 .range-input::-webkit-slider-thumb {
@@ -189,8 +185,8 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-deal-600);
-  border: 2px solid var(--color-ink-950);
+  background: var(--color-accent-primary);
+  border: 2px solid var(--color-bg);
   cursor: pointer;
   box-shadow: 0 0 0 1px rgba(255, 159, 28, 0.4);
 }
@@ -198,8 +194,8 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-deal-600);
-  border: 2px solid var(--color-ink-950);
+  background: var(--color-accent-primary);
+  border: 2px solid var(--color-bg);
   cursor: pointer;
 }
 
@@ -209,7 +205,7 @@ body {
   width: 6px;
 }
 .scroll-thin::-webkit-scrollbar-thumb {
-  background: var(--color-ink-700);
+  background: var(--color-border);
   border-radius: 999px;
 }
 .scroll-thin::-webkit-scrollbar-track {
