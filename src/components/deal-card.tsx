@@ -26,7 +26,10 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-1.5">
-            <StatusBadge status={deal.status} />
+            <div className="flex items-center gap-2">
+              <StoreChip store={deal.store} />
+              <StatusBadge status={deal.status} />
+            </div>
           </div>
           <div className="flex flex-col items-end">
             <span className="text-base font-bold text-deal-500">{deal.discountPct}%</span>
@@ -41,18 +44,20 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
               src={deal.image}
               alt={deal.title}
               loading="lazy"
-              className="h-32 w-full object-cover transition-transform duration-300 hover:scale-105"
+              className="h-32 w-full object-cover transition-transform duration-300 hover:scale-105 bg-ink-800"
               onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
+                // Fallback to store-based placeholder on error
+                const target = e.target as HTMLImageElement;
+                if (target.dataset.fallback !== '1') {
+                  target.dataset.fallback = '1';
+                  target.src = `https://via.placeholder.com/400x256/1C1C21/E8E8EC?text=${encodeURIComponent(deal.store)}`;
+                }
               }}
             />
-            <div className="absolute top-2 left-2">
-              <StoreChip store={deal.store} />
-            </div>
           </div>
         ) : (
-          <div className="mb-2 flex items-center">
-            <StoreChip store={deal.store} />
+          <div className="mb-2 flex h-32 items-center justify-center rounded-lg bg-ink-900">
+            <span className="text-xs text-ink-500">No image</span>
           </div>
         )}
 

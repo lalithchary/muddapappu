@@ -50,14 +50,13 @@ export function AdminClient() {
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [tab]);
 
-  async function saveConfig() {
-    if (!affiliates) return;
+  async function saveConfig(configToSave: AffiliateConfig) {
     setSaving(true);
     try {
       await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ config: affiliates }),
+        body: JSON.stringify({ config: configToSave }),
       });
     } finally {
       setSaving(false);
@@ -66,16 +65,16 @@ export function AdminClient() {
 
   async function updateTag(storeId: StoreId, tag: string) {
     if (!affiliates) return;
-    const updated = { ...affiliates, [storeId]: { ...affiliates[storeId], tag } };
+    const updated = { ...affiliates, [storeId]: { ...affiliates[storeId] || { useCuelinks: true }, tag } };
     setAffiliates(updated);
-    await saveConfig();
+    await saveConfig(updated);
   }
 
   async function toggleCuelinks(storeId: StoreId, useCuelinks: boolean) {
     if (!affiliates) return;
-    const updated = { ...affiliates, [storeId]: { ...affiliates[storeId], useCuelinks } };
+    const updated = { ...affiliates, [storeId]: { ...(affiliates[storeId] || { tag: 'muddapappu' }), useCuelinks } };
     setAffiliates(updated);
-    await saveConfig();
+    await saveConfig(updated);
   }
 
   async function remove(id: string) {
