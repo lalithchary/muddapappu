@@ -6,8 +6,20 @@ import { cn } from '@/lib/cn';
 import { STORE_LIST } from '@/lib/stores';
 import type { DealResult, Coupon, StoreId } from '@/lib/types';
 
+/** Affiliate tracking configuration for each store */
+const AFFILIATE_CONFIG: Record<StoreId, { tag: string; useCuelinks: boolean }> = {
+  amazon: { tag: 'muddapappu-21', useCuelinks: false },
+  flipkart: { tag: 'muddapappu', useCuelinks: true }, // Use Cuelinks shortlink
+  myntra: { tag: 'muddapappu', useCuelinks: true },
+  ajio: { tag: 'muddapappu', useCuelinks: true },
+  swiggy: { tag: 'muddapappu', useCuelinks: true },
+  zomato: { tag: 'muddapappu', useCuelinks: true },
+  zepto: { tag: 'muddapappu', useCuelinks: true },
+  bigbasket: { tag: 'muddapappu', useCuelinks: true },
+};
+
 export function AdminClient() {
-  const [tab, setTab] = useState<'deals' | 'coupons'>('deals');
+  const [tab, setTab] = useState<'deals' | 'coupons' | 'affiliates'>('deals');
   const [deals, setDeals] = useState<DealResult[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +68,46 @@ export function AdminClient() {
         >
           Coupons ({coupons.length})
         </button>
+        <button
+          onClick={() => setTab('affiliates')}
+          className={cn('rounded-lg px-4 py-2 text-sm font-medium', tab === 'affiliates' ? 'bg-deal-500 text-white' : 'bg-ink-800 text-ink-200')}
+        >
+          Affiliate Links
+        </button>
       </div>
+
+      {tab === 'affiliates' && (
+        <div className="card p-6">
+          <h3 className="mb-4 text-sm font-semibold text-ink-200">Store Affiliate Configuration</h3>
+          <dl className="divide-y divide-ink-800">
+            {STORE_LIST.map((store) => {
+              const cfg = AFFILIATE_CONFIG[store.id];
+              return (
+                <div key={store.id} className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="h-2 w-2 rounded-full" style={{ background: store.color }} />
+                    <dt className="text-sm font-medium text-ink-100">{store.name}</dt>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-ink-300">
+                      {cfg.useCuelinks ? 'Cuelinks Shortlink' : `Amazon Tag: ${cfg.tag}-21`}
+                    </div>
+                    <code className="text-xs text-ink-500">{store.domain}</code>
+                  </div>
+                </div>
+              );
+            })}
+          </dl>
+          <div className="mt-4 rounded-lg bg-ink-900/40 p-4 text-xs text-ink-400">
+            <p className="font-semibold text-ink-200 mb-1">How affiliate links are generated:</p>
+            <ul className="list-inside list-disc space-y-1">
+              <li><strong>Amazon:</strong> Uses your Amazon Associates tag with the product ASIN</li>
+              <li><strong>Flipkart/Myntra/Jio/Ajio:</strong> Requires Cuelinks membership for tracking links</li>
+              <li><strong>Swiggy/Zomato/Zepto:</strong> Promo codes + app deep links via Cuelinks</li>
+            </ul>
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="card p-8 text-center text-ink-400">Loading…</div>
