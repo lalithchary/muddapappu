@@ -43,7 +43,7 @@ function parseQuery(searchParams: Record<string, string | string[] | undefined>)
   const page = get('page');
   if (page) q.page = Number(page);
   const view = get('view');
-  if (view && (view === 'grid' || view === 'gallery')) q.view = view;
+  if (view && (view === 'list' || view === 'gallery')) q.view = view;
   return q;
 }
 
@@ -57,7 +57,7 @@ export default async function DealsPage({
   const sp = await searchParams;
   const query = parseQuery(sp);
   const page = query.page ?? 1;
-  const viewMode = query.view ?? 'grid';
+  const viewMode = query.view ?? 'list';
   const storeFilter = query.stores;
 
   const all = await repo().listDeals();

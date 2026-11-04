@@ -7,9 +7,9 @@ export function ViewToggle() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const activeView = searchParams?.get('view') ?? 'grid';
+  const activeView = searchParams?.get('view') ?? 'list';
 
-  function setView(view: 'grid' | 'gallery') {
+  function setView(view: 'list' | 'gallery') {
     const params = new URLSearchParams(searchParams?.toString() ?? '');
     params.set('view', view);
     params.delete('page');
@@ -19,9 +19,9 @@ export function ViewToggle() {
   return (
     <div className="view-toggle">
       <button
-        onClick={() => setView('grid')}
-        className={activeView === 'grid' ? 'active' : undefined}
-        aria-pressed={activeView === 'grid'}
+        onClick={() => setView('list')}
+        className={activeView === 'list' ? 'active' : undefined}
+        aria-pressed={activeView === 'list'}
         aria-label="List view"
         title="List view"
       >
