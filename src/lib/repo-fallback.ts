@@ -4,8 +4,8 @@
  * Tries the primary repo (Supabase) first, but falls back to secondary repo (JSON)
  * if the primary repo throws an error (e.g., tables don't exist in Supabase).
  *
- * NOTE: For write operations (addComment), we need to handle the fact that
- * JSON repo writes will fail on Vercel's read-only filesystem.
+ * For writes (addComment), uses primary only - writes to JSON will fail on Vercel's
+ * read-only filesystem. For reads, falls back gracefully if primary fails.
  */
 import type { Repo } from './repo';
 
@@ -82,18 +82,11 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       }
     },
     async addComment(comment) {
-      // Try primary first (Supabase)
-      try {
-        await primary.addComment(comment);
-        return;
-      } catch {
-        // Primary failed - try secondary (JSON)
-        // Note: JSON writes will fail silently on Vercel's read-only filesystem
-      }
-      
-      // Use secondary (JSON) - writes will be skipped if read-only
-      const target = fallbackMode === 'secondary' ? secondary : primary;
-      await target.addComment(comment);
+      // Only use primary (Supabase) for comment writes
+      // If Supabase tables don't exist, this will throw an error
+      // which the API route will catch and return an error response
+      // This is intentional - comments require a proper backend storage
+      await primary.addComment(comment);
     },
     async listComments(dealSlug) {
       if (fallbackMode === 'secondary') {
@@ -102,12 +95,12 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       try {
         return await primary.listComments(dealSlug);
       } catch {
-        // Primary repo (Supabase) failed - tables might not exist
-        // Try secondary (JSON)
+        // Primary repo (Supabase) failed - try secondary (JSON)
         try {
+          // Also try JSON - but writes to JSON will fail on read-only filesystem
+          // So we return empty array if both fail
           return await secondary.listComments(dealSlug);
         } catch {
-          // Both failed - return empty array
           return [];
         }
       }
@@ -119,12 +112,10 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       try {
         return await primary.commentCounts();
       } catch {
-        // Primary repo (Supabase) failed - tables might not exist
-        // Try secondary (JSON)
+        // Primary repo (Supabase) failed - try secondary (JSON)
         try {
           return await secondary.commentCounts();
         } catch {
-          // Both failed - return empty counts
           return {};
         }
       }
