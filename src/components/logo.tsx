@@ -10,7 +10,7 @@ export function Logo() {
     <div className="relative h-8 w-8">
       {!imgError && (
         <Image
-          src="/logo.svg"
+          src="/logo23.svg"
           alt="Muddapappu Logo"
           fill
           sizes="32px"
@@ -19,11 +19,17 @@ export function Logo() {
           onError={() => setImgError(true)}
         />
       )}
-      {/* Fallback text logo if SVG fails to load */}
+      {/* Fallback to existing logo.svg if logo23.svg fails */}
       {imgError && (
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-orange">
-          <span className="text-xs font-mono text-bg">M</span>
-        </div>
+        <Image
+          src="/logo.svg"
+          alt="Muddapappu Logo"
+          fill
+          sizes="32px"
+          className="object-contain"
+          priority
+          onError={() => setImgError(true)}
+        />
       )}
     </div>
   );
