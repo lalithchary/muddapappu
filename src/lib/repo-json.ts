@@ -7,8 +7,11 @@
  *
  * This is the default when no Supabase credentials are configured.
  * It's intentionally simple and git-friendly: commit the data dir and the
- * site works fully offline / on static hosts. Writes are atomic
- * (write to .tmp then rename) so a crash never corrupts the store.
+ * site works fully offline / on static hosts.
+ *
+ * IMPORTANT: On Vercel's read-only serverless filesystem, write operations
+ * (addComment, saveDeal, etc.) will fail gracefully. For persistent comments,
+ * use Supabase with REPO=auto and proper credentials.
  */
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -18,6 +21,9 @@ import { hydrate, type Repo } from './repo';
 let dir: string | null = null;
 let ready: Promise<string> | null = null;
 
+// Track if write operations are supported
+let writeSupported: boolean | null = null;
+
 async function dataDir(): Promise<string> {
   if (dir) return dir;
   if (ready) return ready;
@@ -25,20 +31,22 @@ async function dataDir(): Promise<string> {
   const base = process.env.DATA_DIR || 'data/store';
   const resolved = path.resolve(/*turbopackIgnore: true*/ process.cwd(), base);
 
-  // During Vercel build, the data directory should already exist
-  // (committed to git). Don't try to create it.
-  if (process.env.VERCEL) {
-    dir = resolved;
-    return resolved;
-  }
+  dir = resolved;
+  return resolved;
+}
 
-  ready = fs.mkdir(resolved, { recursive: true }).then(() => resolved).catch((err) => {
-    // If mkdir fails (e.g., read-only filesystem), just use the path
-    dir = resolved;
-    return resolved;
-  });
-  dir = await ready;
-  return dir;
+async function checkWriteSupport(): Promise<boolean> {
+  if (writeSupported !== null) return writeSupported;
+
+  const testFile = path.join(await dataDir(), '.write-test');
+  try {
+    await fs.writeFile(testFile, 'test', 'utf8');
+    await fs.unlink(testFile);
+    writeSupported = true;
+  } catch {
+    writeSupported = false;
+  }
+  return writeSupported;
 }
 
 function fileFor(name: string): string {
@@ -58,8 +66,16 @@ async function read<T>(name: string, fallback: T[]): Promise<T[]> {
 
 async function write<T>(name: string, rows: T[]): Promise<void> {
   await dataDir();
+  const canWrite = await checkWriteSupport();
   const target = fileFor(name);
   const tmp = `${target}.tmp`;
+
+  if (!canWrite) {
+    // On read-only filesystem (Vercel serverless), silently skip writes
+    // In-memory operations will still work for reads
+    return;
+  }
+
   await fs.writeFile(tmp, JSON.stringify(rows, null, 2), 'utf8');
   await fs.rename(tmp, target);
 }
