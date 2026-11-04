@@ -133,7 +133,7 @@ export default async function DealsPage({
         {pageItems.length === 0 ? (
           <EmptyState query={query} />
         ) : viewMode === 'gallery' ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-10">
             {pageItems.map((deal) => (
               <Suspense key={deal.id} fallback={<div className="deal-card-gallery h-40 animate-pulse" />}>
                 <DealCardGallery deal={deal} commentCount={counts[deal.slug] ?? 0} />

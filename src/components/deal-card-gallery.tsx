@@ -15,7 +15,7 @@ export function DealCardGallery({ deal, commentCount = 0 }: { deal: DealResult; 
     <article className="deal-card-gallery flex flex-col">
       {/* Image is the main content in gallery mode */}
       {deal.image ? (
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+        <div className="relative aspect-square overflow-hidden rounded-lg">
           <img
             src={deal.image}
             alt={deal.title}
@@ -46,17 +46,17 @@ export function DealCardGallery({ deal, commentCount = 0 }: { deal: DealResult; 
       )}
 
       {/* Title */}
-      <Link href={`/deal/${deal.slug}`} className="block px-2">
-        <h3 className="line-clamp-2 text-sm font-semibold text-text">
+      <Link href={`/deal/${deal.slug}`} className="block px-2 pt-2">
+        <h3 className="line-clamp-1 text-xs font-semibold text-text">
           {deal.title}
         </h3>
       </Link>
 
       {/* Price row */}
-      <div className="flex items-center gap-2 px-2 py-2 text-sm">
+      <div className="flex items-center gap-1.5 px-2 pb-2 text-xs">
         <span className="font-bold text-accent-orange">{formatPrice(deal.price)}</span>
         {isExpired && (
-          <span className="text-text-muted line-through">{formatPrice(deal.mrp)}</span>
+          <span className="text-text-muted line-through text-xs">{formatPrice(deal.mrp)}</span>
         )}
       </div>
     </article>
