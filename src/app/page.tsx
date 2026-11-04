@@ -57,7 +57,7 @@ export default async function DealsPage({
   const sp = await searchParams;
   const query = parseQuery(sp);
   const page = query.page ?? 1;
-  const viewMode = query.view ?? 'list';
+  const viewMode = query.view ?? 'gallery';
   const storeFilter = query.stores;
 
   const all = await repo().listDeals();
@@ -73,14 +73,14 @@ export default async function DealsPage({
       <nav className="mb-6 flex border-b border-[var(--color-border)] pb-px" aria-label="Sections">
         <a
           href="/"
-          className="border-b-2 border-[var(--color-accent-orange)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)]"
+          className="border-b-2 border-[var(--color-accent-orange)] px-4 py-2 text-sm font-semibold text-white"
           aria-current="page"
         >
           Deals
         </a>
         <a
           href="/community"
-          className="border-b-2 border-transparent px-4 py-2 text-sm text-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors"
+          className="border-b-2 border-transparent px-4 py-2 text-sm text-[var(--color-text)] hover:text-white transition-colors"
         >
           Community Chat
         </a>
@@ -141,7 +141,7 @@ export default async function DealsPage({
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {pageItems.map((deal) => (
               <Suspense key={deal.id} fallback={<div className="deal-card h-64 animate-pulse" />}>
                 <DealCard deal={deal} commentCount={counts[deal.slug] ?? 0} />

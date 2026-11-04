@@ -1,16 +1,29 @@
 import Link from 'next/link';
-import { STORE_LIST } from '@/lib/stores';
 
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-[var(--color-border)] bg-header">
       <div className="mx-auto max-w-7xl px-4 py-10">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-3 font-display text-xl font-bold">
-              <div className="h-8 w-8 rounded-lg bg-accent-orange flex items-center justify-center">
-                <span className="text-xs font-mono text-bg">M</span>
+              <div className="relative h-8 w-8">
+                <svg
+                  viewBox="0 0 100 100"
+                  width="100%"
+                  height="100%"
+                  className="text-accent-orange"
+                  fill="none"
+                >
+                  <circle cx="50" cy="50" r="46" fill="#8B7D6B" />
+                  <circle cx="50" cy="50" r="42" fill="#A89987" />
+                  <circle cx="50" cy="50" r="38" fill="#B8AA97" />
+                  <g stroke="#9A8C79" strokeWidth="2" strokeDasharray="4 6" fill="none">
+                    <circle cx="50" cy="50" r="34" />
+                  </g>
+                  <path d="M32 38 Q35 22 50 20 Q65 22 68 38 Q75 45 70 58 Q65 68 50 70 Q35 68 30 58 Q25 45 32 38 Z" fill="#FFFFFF" opacity="0.98" />
+                </svg>
               </div>
               <span>
                 Mudda<span className="text-accent-orange">pappu</span>
@@ -20,42 +33,6 @@ export function Footer() {
               India&apos;s best deals aggregator. Real-time price tracking across Amazon, Flipkart,
               Myntra, Ajio and food delivery apps.
             </p>
-          </div>
-
-          {/* Browse */}
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-text">Browse</h4>
-            <ul className="space-y-2 text-sm text-text-muted">
-              <li>
-                <Link href="/" className="hover:text-text hover:underline">
-                  Deals
-                </Link>
-              </li>
-              <li>
-                <Link href="/coupons" className="hover:text-text hover:underline">
-                  Coupons
-                </Link>
-              </li>
-              <li>
-                <Link href="/categories" className="hover:text-text hover:underline">
-                  Categories
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Stores */}
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-text">Stores</h4>
-            <ul className="space-y-2 text-sm text-text-muted">
-              {STORE_LIST.map((s) => (
-                <li key={s.id}>
-                  <Link href={`/?store=${s.id}`} className="hover:text-text hover:underline">
-                    {s.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* About */}
@@ -79,13 +56,6 @@ export function Footer() {
               </li>
             </ul>
           </div>
-        </div>
-
-        <div className="mt-8 border-t border-[var(--color-border)] pt-6 text-xs text-text-muted">
-          <p>
-            © {new Date().getFullYear()} Muddapappu. Affiliate links may earn us a commission. Built
-            for Indian shoppers.
-          </p>
         </div>
       </div>
     </footer>
