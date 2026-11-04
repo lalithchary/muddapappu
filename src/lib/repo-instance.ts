@@ -14,26 +14,25 @@ let singleton: Repo | null = null;
  *  To use comments/chat on Vercel, you MUST set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.
  *
  *  Build-time behavior:
- *  - Vercel sets VERCEL=true during build. We detect this and use JSON repo.
- *  - At runtime, if REPO=auto (default), we use Supabase when credentials are present.
- *  - This allows: JSON data for build (static pages), Supabase for runtime (comments/chat).
+ *  - Detects Vercel build phase via NEXT_PHASE=build
+ *  - Uses JSON repo during build for static generation
+ *  - At runtime with REPO=auto, uses Supabase when credentials are present
  */
 export function repo(): Repo {
   if (singleton) return singleton;
 
   const mode = (process.env.REPO ?? 'auto').toLowerCase();
   const hasSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
-  const isBuildTime = Boolean(process.env.VERCEL) || process.env.NEXT_PHASE === 'build';
+  const isBuild = process.env.NEXT_PHASE === 'build';
 
   if (mode === 'supabase' && !hasSupabase) {
     throw new Error('REPO=supabase but SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY missing');
   }
 
-  // At build time (Vercel), always use JSON repo for static data
-  // This ensures the build doesn't depend on network availability
-  // The JSON data should be pre-seeded (e.g., via seed.ts or manually committed)
-  if (isBuildTime && mode !== 'supabase') {
-    console.log('Using JSON file repository (build mode - Vercel detected)');
+  // During Vercel build phase, use JSON repo for static data generation
+  // This avoids network dependencies and EROFS errors on read-only filesystem
+  if (isBuild) {
+    console.log('Using JSON file repository (build mode)');
     singleton = createJsonRepo();
     return singleton;
   }
