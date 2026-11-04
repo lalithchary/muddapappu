@@ -126,6 +126,7 @@ export interface DealQuery {
   status?: 'all' | Status;
   page?: number;
   pageSize?: number;
+  view?: 'grid' | 'gallery';
 }
 
 export interface DealResult extends Deal {

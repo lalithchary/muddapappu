@@ -1,15 +1,16 @@
 import { Suspense } from 'react';
-import { Search, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { repo } from '@/lib/repo-instance';
 import { applyQuery } from '@/lib/repo';
 import type { DealQuery, StoreId, SortKey, DealTag } from '@/lib/types';
 import { FilterBarWrapper } from '@/components/filter-bar-wrapper';
 import { DealCard } from '@/components/deal-card';
+import { DealCardGallery } from '@/components/deal-card-gallery';
 import { EmptyState } from '@/components/empty-state';
 import { Pagination } from '@/components/pagination';
 import { ViewToggle } from '@/components/view-toggle';
-import { STORE_LIST } from '@/lib/stores';
+import { CategoryTabs } from '@/components/category-tabs';
+import { StoreList } from '@/components/store-list';
 
 function parseQuery(searchParams: Record<string, string | string[] | undefined>): DealQuery {
   const get = (k: string): string | undefined => {
@@ -41,21 +42,12 @@ function parseQuery(searchParams: Record<string, string | string[] | undefined>)
   if (sort) q.sort = sort as SortKey;
   const page = get('page');
   if (page) q.page = Number(page);
+  const view = get('view');
+  if (view && (view === 'grid' || view === 'gallery')) q.view = view;
   return q;
 }
 
 const PAGE_SIZE = 12;
-
-const CATEGORIES = [
-  { id: 'electronics', label: 'Electronics', icon: '⚡' },
-  { id: 'mobiles', label: 'Mobiles', icon: '📱' },
-  { id: 'laptops', label: 'Laptops', icon: '💻' },
-  { id: 'fashion', label: 'Fashion', icon: '👗' },
-  { id: 'footwear', label: 'Footwear', icon: '👟' },
-  { id: 'beauty', label: 'Beauty', icon: '✨' },
-  { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'grocery', label: 'Grocery', icon: '🛒' },
-];
 
 export default async function DealsPage({
   searchParams,
@@ -65,6 +57,8 @@ export default async function DealsPage({
   const sp = await searchParams;
   const query = parseQuery(sp);
   const page = query.page ?? 1;
+  const viewMode = query.view ?? 'grid';
+  const storeFilter = query.stores;
 
   const all = await repo().listDeals();
   const filtered = applyQuery(all, query);
@@ -75,29 +69,44 @@ export default async function DealsPage({
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Tab navigation */}
+      <nav className="mb-6 flex border-b border-[var(--color-border)] pb-px" aria-label="Sections">
+        <a
+          href="/"
+          className="border-b-2 border-[var(--color-accent-orange)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)]"
+          aria-current="page"
+        >
+          Deals
+        </a>
+        <a
+          href="/community"
+          className="border-b-2 border-transparent px-4 py-2 text-sm text-[var(--color-text)] hover:text-[var(--color-bg)] transition-colors"
+        >
+          Community Chat
+        </a>
+      </nav>
+
+      {/* Hero section */}
       <section className="mb-12 px-4 text-center">
         <h1 className="font-display text-3xl font-bold text-text sm:text-4xl lg:text-5xl">
           Best{' '}
-          <span className="text-accent-orange">
-            Deals
-          </span>{' '}
+          <span className="text-accent-orange">Deals</span>{' '}
           in India
         </h1>
-        <p className="mt-3 text-sm text-text-muted max-w-2xl mx-auto">
+        <p className="mt-2 text-sm text-text-muted max-w-2xl mx-auto">
           Live price tracking across Amazon, Flipkart, Myntra, Ajio & food delivery apps.
           Find verified deals with real-time price drops.
         </p>
       </section>
 
-      {/* Search Section */}
+      {/* Search section */}
       <section className="mb-8 px-4">
         <div className="max-w-3xl mx-auto">
           <FilterBarWrapper initialQuery={query} />
         </div>
       </section>
 
-      {/* Results Header */}
+      {/* View toggle */}
       <section className="mb-4 px-4">
         <div className="flex items-center justify-between">
           <p className="text-sm text-text-muted">
@@ -107,44 +116,32 @@ export default async function DealsPage({
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Category tabs */}
       <section className="mb-6 px-4">
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              className="category-btn"
-              style={{
-                backgroundColor: query.categories?.includes(cat.id as any) ? 'var(--color-accent-orange)' : '',
-                color: query.categories?.includes(cat.id as any) ? 'var(--color-bg)' : '',
-              }}
-              onClick={() => {
-                const newCategories = query.categories
-                  ? query.categories.filter(c => c !== cat.id)
-                  : [cat.id];
-                // Update URL
-                const params = new URLSearchParams(window.location.search);
-                if (newCategories.length > 0) {
-                  params.set('cat', newCategories.join(','));
-                } else {
-                  params.delete('cat');
-                }
-                window.location.href = `/?${params.toString()}`;
-              }}
-            >
-              <span className="text-base">{cat.icon}</span>
-              <span>{cat.label}</span>
-            </button>
-          ))}
-        </div>
+        <CategoryTabs />
       </section>
 
-      {/* Results Grid */}
+      {/* Store list for multi-store deals */}
+      {storeFilter && storeFilter.length > 0 && (
+        <section className="mb-6 px-4">
+          <StoreList stores={storeFilter} />
+        </section>
+      )}
+
+      {/* Results grid */}
       <main className="pb-12">
         {pageItems.length === 0 ? (
           <EmptyState query={query} />
+        ) : viewMode === 'gallery' ? (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {pageItems.map((deal) => (
+              <Suspense key={deal.id} fallback={<div className="deal-card-gallery h-40 animate-pulse" />}>
+                <DealCardGallery deal={deal} commentCount={counts[deal.slug] ?? 0} />
+              </Suspense>
+            ))}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {pageItems.map((deal) => (
               <Suspense key={deal.id} fallback={<div className="deal-card h-64 animate-pulse" />}>
                 <DealCard deal={deal} commentCount={counts[deal.slug] ?? 0} />

@@ -1,44 +1,43 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Grid, List } from 'lucide-react';
+import { Grid, LayoutGrid } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export function ViewToggle() {
-  const [viewMode, setViewMode] = useState<'grid' | 'gallery'>('grid');
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('muddapappu-view-mode');
-      if (saved === 'gallery') setViewMode('gallery');
-    } catch {}
-  }, []);
+  const activeView = searchParams?.get('view') ?? 'grid';
 
-  const toggleView = () => {
-    const next = viewMode === 'grid' ? 'gallery' : 'grid';
-    setViewMode(next);
-    try {
-      localStorage.setItem('muddapappu-view-mode', next);
-    } catch {}
-  };
+  function setView(view: 'grid' | 'gallery') {
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
+    params.set('view', view);
+    params.delete('page');
+    router.replace(`/?${params.toString()}`);
+  }
 
   return (
-    <button
-      onClick={toggleView}
-      className="view-toggle"
-      aria-label="Toggle view mode"
-      title={viewMode === 'grid' ? 'Switch to gallery view' : 'Switch to list view'}
-    >
-      {viewMode === 'grid' ? (
-        <>
-          <List className="h-4 w-4 mr-1" />
-          <span>Gallery</span>
-        </>
-      ) : (
-        <>
-          <Grid className="h-4 w-4 mr-1" />
-          <span>List</span>
-        </>
-      )}
-    </button>
+    <div className="view-toggle">
+      <button
+        onClick={() => setView('grid')}
+        className={activeView === 'grid' ? 'active' : undefined}
+        aria-pressed={activeView === 'grid'}
+        aria-label="List view"
+        title="List view"
+      >
+        <LayoutGrid className="h-4 w-4 mr-1" />
+        <span>List</span>
+      </button>
+      <button
+        onClick={() => setView('gallery')}
+        className={activeView === 'gallery' ? 'active' : undefined}
+        aria-pressed={activeView === 'gallery'}
+        aria-label="Gallery view"
+        title="Gallery view"
+      >
+        <Grid className="h-4 w-4 mr-1" />
+        <span>Gallery</span>
+      </button>
+    </div>
   );
 }

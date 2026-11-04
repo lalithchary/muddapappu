@@ -5,7 +5,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Map CSS variables to Tailwind classes for convenience
+        // CSS variable aliases for backward compatibility with ink-* classes
+        ink: {
+          100: '#C9D1D9',
+          200: '#A3ACB8',
+          300: '#738798',
+          400: '#6E7681',
+          500: '#4B6A68',
+          600: '#4B6A68',
+          700: '#30363D',
+          800: '#21262D',
+          900: '#161B22',
+          950: '#0D1117',
+        },
+        deal: {
+          100: '#C9D1D9',
+          200: '#A3ACB8',
+          300: '#738798',
+          400: '#6E7681',
+          500: '#FF9F1C',
+          600: '#FFB627',
+          700: '#FF9F1C',
+          800: '#E07850',
+          900: '#0D1117',
+        },
+        // Direct CSS variable mappings (new theme)
         bg: 'var(--color-bg)',
         'color-bg': 'var(--color-bg)',
         header: 'var(--color-header)',
@@ -26,6 +50,7 @@ export default {
         sm: 'var(--shadow-sm)',
         md: 'var(--shadow-md)',
         lg: 'var(--shadow-lg)',
+        card: 'var(--shadow-md)',
       },
       keyframes: {
         'fade-up': {
