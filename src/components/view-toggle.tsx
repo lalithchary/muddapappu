@@ -7,7 +7,7 @@ export function ViewToggle() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const activeView = searchParams?.get('view') ?? 'list';
+  const activeView = searchParams?.get('view') ?? 'gallery';
 
   function setView(view: 'list' | 'gallery') {
     const params = new URLSearchParams(searchParams?.toString() ?? '');
