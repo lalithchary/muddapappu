@@ -3,10 +3,13 @@
  *
  * Tries the primary repo (Supabase) first, but falls back to secondary repo (JSON)
  * if the primary repo throws an error (e.g., tables don't exist in Supabase).
+ *
+ * NOTE: For write operations (addComment), we need to handle the fact that
+ * JSON repo writes will fail on Vercel's read-only filesystem.
  */
 import type { Repo } from './repo';
 
-let fallbackMode = 'primary';
+let fallbackMode: 'primary' | 'secondary' = 'primary';
 
 export function withFallback(primary: Repo, secondary: Repo): Repo {
   return {
@@ -79,8 +82,18 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       }
     },
     async addComment(comment) {
+      // Try primary first (Supabase)
+      try {
+        await primary.addComment(comment);
+        return;
+      } catch {
+        // Primary failed - try secondary (JSON)
+        // Note: JSON writes will fail silently on Vercel's read-only filesystem
+      }
+      
+      // Use secondary (JSON) - writes will be skipped if read-only
       const target = fallbackMode === 'secondary' ? secondary : primary;
-      return target.addComment(comment);
+      await target.addComment(comment);
     },
     async listComments(dealSlug) {
       if (fallbackMode === 'secondary') {
@@ -89,8 +102,14 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       try {
         return await primary.listComments(dealSlug);
       } catch {
-        // Comments require database - return empty if tables don't exist
-        return [];
+        // Primary repo (Supabase) failed - tables might not exist
+        // Try secondary (JSON)
+        try {
+          return await secondary.listComments(dealSlug);
+        } catch {
+          // Both failed - return empty array
+          return [];
+        }
       }
     },
     async commentCounts() {
@@ -100,8 +119,14 @@ export function withFallback(primary: Repo, secondary: Repo): Repo {
       try {
         return await primary.commentCounts();
       } catch {
-        // Comments require database - return empty counts if tables don't exist
-        return {};
+        // Primary repo (Supabase) failed - tables might not exist
+        // Try secondary (JSON)
+        try {
+          return await secondary.commentCounts();
+        } catch {
+          // Both failed - return empty counts
+          return {};
+        }
       }
     },
   };
