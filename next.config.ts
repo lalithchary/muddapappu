@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  // Ensure data files are available during build
+  // The JSON data should be committed to the repo for Vercel builds
+  turbopack: {},
+
   images: {
     // Remote images come from retailer CDNs (Amazon, Flipkart, Myntra, Ajio).
     // Add your own CDN here if you proxy images through Cloudflare R2 later.

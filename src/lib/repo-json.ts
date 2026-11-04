@@ -21,11 +21,22 @@ let ready: Promise<string> | null = null;
 async function dataDir(): Promise<string> {
   if (dir) return dir;
   if (ready) return ready;
+
   const base = process.env.DATA_DIR || 'data/store';
-  // Turbopack: this path is dynamic (DATA_DIR env or cwd), so we opt out
-  // of static tracing — the JSON repo is only used in dev / self-hosted mode.
   const resolved = path.resolve(/*turbopackIgnore: true*/ process.cwd(), base);
-  ready = fs.mkdir(resolved, { recursive: true }).then(() => resolved);
+
+  // During Vercel build, the data directory should already exist
+  // (committed to git). Don't try to create it.
+  if (process.env.VERCEL) {
+    dir = resolved;
+    return resolved;
+  }
+
+  ready = fs.mkdir(resolved, { recursive: true }).then(() => resolved).catch((err) => {
+    // If mkdir fails (e.g., read-only filesystem), just use the path
+    dir = resolved;
+    return resolved;
+  });
   dir = await ready;
   return dir;
 }
