@@ -30,9 +30,11 @@ export function FilterBarWrapper({
 }: {
   initialQuery: DealQuery;
 }) {
+  // Use server-provided initialQuery as the initial state to avoid hydration mismatch
   const [query, setQuery] = useState<DealQuery>(initialQuery);
 
   useEffect(() => {
+    // Update from URL on client-side mounts (for client-side navigation)
     setQuery(parseSearch(new URLSearchParams(window.location.search)));
   }, []);
 
