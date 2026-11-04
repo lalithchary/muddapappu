@@ -8,7 +8,7 @@
     "value": 50,
     "valueType": "flat",
     "minOrder": 199,
-    "expiresAt": "2026-11-16T06:06:33.379Z",
+    "expiresAt": "2026-11-19T05:18:16.948Z",
     "active": true,
     "ctaUrl": "https://www.amazon.in"
   },
@@ -21,7 +21,7 @@
     "value": 50,
     "valueType": "percent",
     "minOrder": 149,
-    "expiresAt": "2026-12-01T06:06:33.379Z",
+    "expiresAt": "2026-12-04T05:18:16.948Z",
     "active": true,
     "ctaUrl": "https://www.swiggy.com"
   },
@@ -34,7 +34,7 @@
     "value": 200,
     "valueType": "flat",
     "minOrder": 1499,
-    "expiresAt": "2026-11-08T06:06:33.379Z",
+    "expiresAt": "2026-11-11T05:18:16.948Z",
     "active": true,
     "ctaUrl": "https://www.myntra.com"
   },
@@ -47,7 +47,7 @@
     "value": 150,
     "valueType": "flat",
     "minOrder": 0,
-    "expiresAt": "2026-11-21T06:06:33.379Z",
+    "expiresAt": "2026-11-24T05:18:16.948Z",
     "active": true,
     "ctaUrl": "https://www.zomato.com"
   }
