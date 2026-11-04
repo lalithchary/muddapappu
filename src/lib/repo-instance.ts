@@ -1,21 +1,23 @@
 import { createJsonRepo } from './repo-json';
 import { createSupabaseRepo } from './repo-supabase';
+import { withFallback } from './repo-fallback';
 import type { Repo } from './repo';
 
 let singleton: Repo | null = null;
 
 /**
  * Returns the active repository.
- *  REPO=auto (default): Supabase if configured, else JSON files.
- *  REPO=json   : force local JSON storage (great for dev / Raspberry Pi hybrid).
- *  REPO=supabase: force Supabase Postgres (recommended for Vercel production).
+ *  REPO=auto (default): Try Supabase first, fall back to JSON if tables don't exist.
+ *  REPO=json   : force local JSON storage (great for dev / hybrid setups).
+ *  REPO=supabase: force Supabase Postgres (recommended for Vercel production with seeded data).
  *
  *  IMPORTANT for Vercel: JSON file writes WILL FAIL on Vercel serverless.
  *  To use comments/chat on Vercel, you MUST set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
  *  AND ensure the database is seeded (run supabase/schema.sql in Supabase SQL editor).
  *
  *  Runtime behavior:
- *  - At runtime (server-side functions, API routes): If Supabase is configured, use it
+ *  - At runtime (server-side functions, API routes): If Supabase is configured, try it first
+ *  - If Supabase tables don't exist, automatically fall back to JSON for static data
  *  - Build time: Always use JSON repo to avoid network dependencies
  *
  *  Detection:
@@ -41,15 +43,18 @@ export function repo(): Repo {
     return singleton;
   }
 
-  const useSupabase = mode === 'supabase' || (mode === 'auto' && hasSupabase);
-
-  if (useSupabase) {
-    console.log('Using Supabase repository (production mode)');
-    singleton = createSupabaseRepo();
-  } else {
-    console.log('Using JSON file repository (dev mode)');
-    singleton = createJsonRepo();
+  // At runtime with Supabase configured, use a fallback wrapper
+  // Primary: Supabase, Secondary: JSON
+  // This handles the case where Supabase is configured but tables don't exist yet
+  if (hasSupabase || mode === 'supabase') {
+    const supabaseRepo = createSupabaseRepo();
+    const jsonRepo = createJsonRepo();
+    console.log('Using Supabase repository with JSON fallback');
+    singleton = withFallback(supabaseRepo, jsonRepo);
+    return singleton;
   }
 
+  console.log('Using JSON file repository (dev mode)');
+  singleton = createJsonRepo();
   return singleton;
 }
