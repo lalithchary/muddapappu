@@ -107,10 +107,24 @@ export function applyQuery(
 
 /** Hydrate a raw Deal with computed fields */
 export function hydrate(deal: Deal, now: number = Date.now()): DealResult {
+  const priceHistory = Array.isArray(deal.priceHistory) && deal.priceHistory.length > 0
+    ? deal.priceHistory
+    : [{ date: new Date().toISOString().slice(0, 10), price: deal.price || 0 }];
+  const verifiedAt = deal.verifiedAt || new Date().toISOString();
+  const listedAt = deal.listedAt || new Date().toISOString();
+  const inStock = deal.inStock ?? true;
+  const status = (deal as any).status || dealStatus({ ...deal, verifiedAt, inStock }, now);
+  const discount = (deal as any).discountPct ?? discountPct(deal);
+  const secondsLeft = (deal as any).endsInSeconds ?? endsInSeconds(deal, now);
+
   return {
     ...deal,
-    status: dealStatus(deal, now),
-    discountPct: discountPct(deal),
-    endsInSeconds: endsInSeconds(deal, now),
+    inStock,
+    priceHistory,
+    verifiedAt,
+    listedAt,
+    status,
+    discountPct: discount,
+    endsInSeconds: secondsLeft,
   };
 }

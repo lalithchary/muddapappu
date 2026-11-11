@@ -3,7 +3,7 @@
     "id": "amazon-boat-airdopes-311",
     "slug": "boat-airdopes-311-pro-wireless-earbuds",
     "title": "boAt Airdopes 311 Pro TWS Earbuds with 50H Playtime, ENx Tech & Beast Mode",
-    "description": "Quad Mics with ENx Tech for clear calls\n50 Hours total playback with ASAP Charge\n13mm Drivers for deep bass signature sound\nIPX4 Sweat & Splash resistance",
+    "description": "Quad Mics with ENx Tech for crystal clear calls. 50 Hours total playback with ASAP Charge. 13mm Drivers for signature boAt bass sound. IPX4 splash resistance.",
     "store": "amazon",
     "brand": "boAt",
     "category": "electronics",
@@ -29,22 +29,24 @@
       }
     ],
     "productUrl": "https://www.amazon.in/dp/B0D5BNKVZ2",
-    "affiliateUrl": "https://www.amazon.in/dp/B0D5BNKVZ2?tag=sastadeal-21",
-    "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.040Z",
-    "listedAt": "2026-11-11T16:28:24.041Z",
-    "endsAt": "2026-11-12T16:28:24.041Z",
-    "pricePromisedFor": "48h",
+    "affiliateUrl": "https://www.amazon.in/dp/B0D5BNKVZ2?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0D5BNKVZ2?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T16:38:33.759Z",
+    "endsAt": "2026-11-13T18:38:45.602Z",
     "image": "https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg",
     "rating": 4.2,
     "ratingsCount": 18450,
     "inStock": true,
     "tags": [
-      "bestseller",
-      "budget",
-      "hot"
+      "hot",
+      "bestseller"
     ],
-    "featured": 10
+    "featured": 10,
+    "status": "active",
+    "discountPct": 80,
+    "endsInSeconds": 172799985
   },
   {
     "id": "flipkart-samsung-galaxy-m15",
@@ -74,9 +76,9 @@
     "productUrl": "https://www.flipkart.com/samsung-galaxy-m15-5g-celestine-blue-128-gb/p/itm4b292e9ef2433",
     "networkLink": "https://www.cuelinks.com/target?id=flipkart-samsung-m15",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T13:28:24.041Z",
-    "endsAt": "2026-11-13T06:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T13:38:33.759Z",
+    "endsAt": "2026-11-13T06:38:33.759Z",
     "image": "https://m.media-amazon.com/images/I/81LV2vC+jDL._SL1500_.jpg",
     "rating": 4.3,
     "ratingsCount": 42310,
@@ -84,7 +86,10 @@
     "tags": [
       "trending"
     ],
-    "featured": 8
+    "featured": 8,
+    "status": "active",
+    "discountPct": 32,
+    "endsInSeconds": 129588142
   },
   {
     "id": "myntra-nike-court-vision",
@@ -114,9 +119,9 @@
     "productUrl": "https://www.myntra.com/sneakers/nike/nike-men-white-court-vision-low-next-nature-sneakers/16845342/buy",
     "networkLink": "https://www.cuelinks.com/target?id=myntra-nike-court",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-10T18:28:24.041Z",
-    "endsAt": "2026-11-12T12:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-10T18:38:33.759Z",
+    "endsAt": "2026-11-12T12:38:33.759Z",
     "image": "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/16845342/2022/1/18/6bf83503-4f9d-4720-8051-bdc115c6130b1642511216654-Nike-Court-Vision-Low-Next-Nature-Men-Shoes-2211642511216091-1.jpg",
     "rating": 4.5,
     "ratingsCount": 3120,
@@ -125,7 +130,10 @@
       "bestseller",
       "hot"
     ],
-    "featured": 9
+    "featured": 9,
+    "status": "expiring",
+    "discountPct": 45,
+    "endsInSeconds": 64788142
   },
   {
     "id": "ajio-levis-511-slim",
@@ -155,9 +163,9 @@
     "productUrl": "https://www.ajio.com/levis-511-slim-fit-jeans/p/461234567_blue",
     "networkLink": "https://www.cuelinks.com/target?id=ajio-levis-511",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T15:28:24.041Z",
-    "endsAt": "2026-11-12T06:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T15:38:33.759Z",
+    "endsAt": "2026-11-12T06:38:33.759Z",
     "image": "https://m.media-amazon.com/images/I/61iJ4U6qM0L._UL1500_.jpg",
     "rating": 4.4,
     "ratingsCount": 1940,
@@ -165,7 +173,10 @@
     "tags": [
       "budget"
     ],
-    "featured": 6
+    "featured": 6,
+    "status": "expiring",
+    "discountPct": 59,
+    "endsInSeconds": 43188142
   },
   {
     "id": "swiggy-gourmet-50-off",
@@ -186,9 +197,9 @@
     ],
     "productUrl": "https://www.swiggy.com",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T06:28:24.041Z",
-    "endsAt": "2026-11-13T18:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T06:38:33.759Z",
+    "endsAt": "2026-11-13T18:38:33.759Z",
     "image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/e0839dd57d44e4b156571158d94181dd",
     "rating": 4.8,
     "ratingsCount": 52100,
@@ -197,7 +208,10 @@
       "hot",
       "bestseller"
     ],
-    "featured": 7
+    "featured": 7,
+    "status": "active",
+    "discountPct": 50,
+    "endsInSeconds": 172788142
   },
   {
     "id": "zepto-grocery-freebie-199",
@@ -218,9 +232,9 @@
     ],
     "productUrl": "https://zepto.app",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T14:28:24.041Z",
-    "endsAt": "2026-11-14T18:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T14:38:33.759Z",
+    "endsAt": "2026-11-14T18:38:33.759Z",
     "image": "https://m.media-amazon.com/images/I/71Y-C6vXQJL._SL1500_.jpg",
     "rating": 4.6,
     "ratingsCount": 12800,
@@ -229,13 +243,16 @@
       "trending",
       "budget"
     ],
-    "featured": 5
+    "featured": 5,
+    "status": "active",
+    "discountPct": 20,
+    "endsInSeconds": 259188142
   },
   {
     "id": "amazon-asus-vivobook-15",
     "slug": "asus-vivobook-15-intel-core-i3-12th-gen-8gb-512gb",
     "title": "ASUS Vivobook 15, Intel Core i3-1215U 12th Gen, 15.6\" FHD (8GB/512GB SSD/Win 11/Office 2021)",
-    "description": "12th Gen Intel Core i3-1215U (up to 4.4 GHz)\n8GB DDR4 RAM + 512GB M.2 NVMe PCIe 3.0 SSD\nThin and light design (1.7 kg) with fingerprint sensor\nPre-installed Windows 11 + MS Office Home & Student 2021",
+    "description": "12th Gen Intel Core i3-1215U up to 4.4 GHz. 8GB DDR4 RAM + 512GB M.2 NVMe PCIe SSD. Thin & Light 1.7kg with fingerprint sensor.",
     "store": "amazon",
     "brand": "ASUS",
     "category": "laptops",
@@ -257,20 +274,24 @@
       }
     ],
     "productUrl": "https://www.amazon.in/dp/B0C39X29X7",
-    "affiliateUrl": "https://www.amazon.in/dp/B0C39X29X7?tag=sastadeal-21",
-    "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T10:28:24.041Z",
-    "endsAt": "2026-11-12T08:28:24.041Z",
+    "affiliateUrl": "https://www.amazon.in/dp/B0C39X29X7?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0C39X29X7?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T10:38:33.759Z",
+    "endsAt": "2026-11-13T18:38:45.605Z",
     "image": "https://m.media-amazon.com/images/I/71c5W9NxN5L._SL1500_.jpg",
     "rating": 4.1,
     "ratingsCount": 8900,
     "inStock": true,
     "tags": [
-      "bestseller",
+      "trending",
       "hot"
     ],
-    "featured": 10
+    "featured": 10,
+    "status": "active",
+    "discountPct": 34,
+    "endsInSeconds": 172799988
   },
   {
     "id": "zomato-gold-flat-120-off",
@@ -291,9 +312,9 @@
     ],
     "productUrl": "https://www.zomato.com",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T17:58:24.041Z",
-    "endsAt": "2026-11-12T00:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T18:08:33.759Z",
+    "endsAt": "2026-11-12T00:38:33.759Z",
     "image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/e0839dd57d44e4b156571158d94181dd",
     "rating": 4.7,
     "ratingsCount": 94000,
@@ -302,7 +323,10 @@
       "hot",
       "trending"
     ],
-    "featured": 9
+    "featured": 9,
+    "status": "expiring",
+    "discountPct": 60,
+    "endsInSeconds": 21588142
   },
   {
     "id": "bigbasket-bbstar-flat-200-cashback",
@@ -323,9 +347,9 @@
     ],
     "productUrl": "https://www.bigbasket.com",
     "source": "manual",
-    "verifiedAt": "2026-11-11T18:28:24.041Z",
-    "listedAt": "2026-11-11T08:28:24.041Z",
-    "endsAt": "2026-11-16T18:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:33.759Z",
+    "listedAt": "2026-11-11T08:38:33.759Z",
+    "endsAt": "2026-11-16T18:38:33.759Z",
     "image": "https://m.media-amazon.com/images/I/71Y-C6vXQJL._SL1500_.jpg",
     "rating": 4.3,
     "ratingsCount": 15400,
@@ -333,7 +357,10 @@
     "tags": [
       "budget"
     ],
-    "featured": 4
+    "featured": 4,
+    "status": "active",
+    "discountPct": 10,
+    "endsInSeconds": 431988142
   },
   {
     "id": "expired-sample-fire-boltt",
@@ -358,9 +385,9 @@
     ],
     "productUrl": "https://www.amazon.in/dp/B0BJJ81D7G",
     "source": "manual",
-    "verifiedAt": "2026-11-06T18:28:24.041Z",
-    "listedAt": "2026-11-01T18:28:24.041Z",
-    "endsAt": "2026-11-09T18:28:24.041Z",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-01T18:38:33.759Z",
+    "endsAt": "2026-11-09T18:38:33.759Z",
     "image": "https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg",
     "rating": 4,
     "ratingsCount": 65100,
@@ -368,6 +395,372 @@
     "tags": [
       "budget"
     ],
-    "featured": 0
+    "featured": 0,
+    "status": "expired",
+    "discountPct": 89,
+    "endsInSeconds": 0,
+    "affiliateUrl": "https://www.amazon.in/dp/B0BJJ81D7G?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0BJJ81D7G?tag=muddapappu_21"
+  },
+  {
+    "id": "amazon-oneplus-nord-ce4-lite",
+    "slug": "oneplus-nord-ce4-lite-5g-super-silver",
+    "title": "OnePlus Nord CE4 Lite 5G (Super Silver, 8GB RAM, 128GB Storage)",
+    "description": "50MP Sony LYT-600 with OIS camera. 5500 mAh battery with 80W SUPERVOOC fast charging. 120Hz AMOLED Display.",
+    "store": "amazon",
+    "brand": "OnePlus",
+    "category": "mobiles",
+    "subcategory": "5g-smartphones",
+    "price": 16999,
+    "mrp": 20999,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 20999
+      },
+      {
+        "date": "2026-11-11",
+        "price": 16999
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0D6F5Q97B",
+    "affiliateUrl": "https://www.amazon.in/dp/B0D6F5Q97B?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0D6F5Q97B?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.606Z",
+    "image": "https://m.media-amazon.com/images/I/61Io5-ojWUL._SL1500_.jpg",
+    "rating": 4.3,
+    "ratingsCount": 22100,
+    "inStock": true,
+    "tags": [
+      "trending"
+    ],
+    "featured": 9,
+    "status": "active",
+    "discountPct": 19,
+    "endsInSeconds": 172799989
+  },
+  {
+    "id": "amazon-samsung-galaxy-m35",
+    "slug": "samsung-galaxy-m35-5g-6gb-128gb",
+    "title": "Samsung Galaxy M35 5G (Daylight Blue, 6GB RAM, 128GB Storage) | Corning Gorilla Glass Victus+",
+    "description": "6000mAh Battery with 25W fast charging. 50MP Triple Camera with OIS. 120Hz Super AMOLED Display with 1000 nits high brightness mode.",
+    "store": "amazon",
+    "brand": "Samsung",
+    "category": "mobiles",
+    "subcategory": "5g-smartphones",
+    "price": 14999,
+    "mrp": 24499,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 24499
+      },
+      {
+        "date": "2026-11-11",
+        "price": 14999
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0D7HWNLLX",
+    "affiliateUrl": "https://www.amazon.in/dp/B0D7HWNLLX?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0D7HWNLLX?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.608Z",
+    "image": "https://m.media-amazon.com/images/I/81LV2vC+jDL._SL1500_.jpg",
+    "rating": 4.2,
+    "ratingsCount": 14200,
+    "inStock": true,
+    "tags": [
+      "trending",
+      "hot"
+    ],
+    "featured": 9,
+    "status": "active",
+    "discountPct": 39,
+    "endsInSeconds": 172799991
+  },
+  {
+    "id": "amazon-noise-colorfit-pulse-3",
+    "slug": "noise-colorfit-pulse-3-smartwatch",
+    "title": "Noise Pulse 3 1.96\" Curved Display Smart Watch with Bluetooth Calling",
+    "description": "1.96\" TFT curved display with 550 nits brightness. Bluetooth calling, 170+ watch faces, 100 sports modes, up to 7 days battery.",
+    "store": "amazon",
+    "brand": "Noise",
+    "category": "electronics",
+    "subcategory": "smartwatches",
+    "price": 1399,
+    "mrp": 6999,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 6999
+      },
+      {
+        "date": "2026-11-11",
+        "price": 1399
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0C3CG3NVR",
+    "affiliateUrl": "https://www.amazon.in/dp/B0C3CG3NVR?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0C3CG3NVR?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.609Z",
+    "image": "https://m.media-amazon.com/images/I/61epn29QG0L._SL1500_.jpg",
+    "rating": 4,
+    "ratingsCount": 35600,
+    "inStock": true,
+    "tags": [
+      "hot",
+      "bestseller"
+    ],
+    "featured": 8,
+    "status": "active",
+    "discountPct": 80,
+    "endsInSeconds": 172799992
+  },
+  {
+    "id": "amazon-boult-audio-z40-pro",
+    "slug": "boult-audio-z40-pro-tws-earbuds",
+    "title": "Boult Audio Z40 Pro TWS Earbuds with 100H Playtime, Quad Mic ENC, 45ms Low Latency",
+    "description": "100 hours massive battery life. Rubber grip finish with BoomX Tech for deep dynamic bass. Lightning Boult fast charge: 10 mins = 120 mins.",
+    "store": "amazon",
+    "brand": "Boult",
+    "category": "electronics",
+    "subcategory": "earbuds",
+    "price": 999,
+    "mrp": 5499,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 5499
+      },
+      {
+        "date": "2026-11-11",
+        "price": 999
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0CHMY9R4W",
+    "affiliateUrl": "https://www.amazon.in/dp/B0CHMY9R4W?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0CHMY9R4W?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.610Z",
+    "image": "https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg",
+    "rating": 4.1,
+    "ratingsCount": 29800,
+    "inStock": true,
+    "tags": [
+      "hot",
+      "bestseller"
+    ],
+    "featured": 8,
+    "status": "active",
+    "discountPct": 82,
+    "endsInSeconds": 172799993
+  },
+  {
+    "id": "amazon-sandisk-1tb-portable-ssd",
+    "slug": "sandisk-1tb-portable-external-ssd",
+    "title": "SanDisk 1TB Portable External SSD - Up to 800MB/s Read Speed, USB-C",
+    "description": "Solid state performance with up to 800MB/s read speeds in a portable drive. 2-meter drop protection and rubber hook for travel.",
+    "store": "amazon",
+    "brand": "SanDisk",
+    "category": "electronics",
+    "subcategory": "storage",
+    "price": 7499,
+    "mrp": 14900,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 14900
+      },
+      {
+        "date": "2026-11-11",
+        "price": 7499
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B08GTYFC37",
+    "affiliateUrl": "https://www.amazon.in/dp/B08GTYFC37?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B08GTYFC37?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.611Z",
+    "image": "https://m.media-amazon.com/images/I/61fIqU8i+AL._SL1500_.jpg",
+    "rating": 4.5,
+    "ratingsCount": 42100,
+    "inStock": true,
+    "tags": [
+      "hot",
+      "bestseller"
+    ],
+    "featured": 7,
+    "status": "active",
+    "discountPct": 50,
+    "endsInSeconds": 172799994
+  },
+  {
+    "id": "amazon-fire-tv-stick-4k",
+    "slug": "amazon-fire-tv-stick-4k-select-alexa-voice-remote",
+    "title": "Amazon Fire TV Stick 4K with Alexa Voice Remote (includes TV controls)",
+    "description": "Cinematic experience - Watch in vibrant 4K Ultra HD with support for Dolby Vision, HDR10+, and immersive Dolby Atmos audio.",
+    "store": "amazon",
+    "brand": "Amazon",
+    "category": "electronics",
+    "subcategory": "streaming",
+    "price": 3999,
+    "mrp": 5999,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 5999
+      },
+      {
+        "date": "2026-11-11",
+        "price": 3999
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0BP9MDCQZ",
+    "affiliateUrl": "https://www.amazon.in/dp/B0BP9MDCQZ?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0BP9MDCQZ?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.612Z",
+    "image": "https://m.media-amazon.com/images/I/61r9+s8r5VL._SL1000_.jpg",
+    "rating": 4.4,
+    "ratingsCount": 58000,
+    "inStock": true,
+    "tags": [
+      "trending",
+      "hot"
+    ],
+    "featured": 8,
+    "status": "active",
+    "discountPct": 33,
+    "endsInSeconds": 172799995
+  },
+  {
+    "id": "amazon-sony-wh-ch520-headphones",
+    "slug": "sony-wh-ch520-wireless-bluetooth-headphones",
+    "title": "Sony WH-CH520 Wireless Bluetooth On-Ear Headphones with Mic (50H Playtime)",
+    "description": "With up to 50-hour battery life and quick charging, you'll have enough power for multi-day road trips. DSEE restored high-frequency sound.",
+    "store": "amazon",
+    "brand": "Sony",
+    "category": "electronics",
+    "subcategory": "headphones",
+    "price": 4490,
+    "mrp": 5990,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 5990
+      },
+      {
+        "date": "2026-11-11",
+        "price": 4490
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0BS1PR85X",
+    "affiliateUrl": "https://www.amazon.in/dp/B0BS1PR85X?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0BS1PR85X?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.613Z",
+    "image": "https://m.media-amazon.com/images/I/41lArHQ30bL._SL1200_.jpg",
+    "rating": 4.3,
+    "ratingsCount": 16700,
+    "inStock": true,
+    "tags": [
+      "trending"
+    ],
+    "featured": 9,
+    "status": "active",
+    "discountPct": 25,
+    "endsInSeconds": 172799996
+  },
+  {
+    "id": "amazon-acer-aspire-lite-ryzen",
+    "slug": "acer-aspire-lite-amd-ryzen-5-5500u-16gb-512gb",
+    "title": "Acer Aspire Lite AMD Ryzen 5 5500U Premium Thin and Light Laptop (16 GB RAM/512 GB SSD)",
+    "description": "AMD Ryzen 5 5500U Hexa-Core Mobile Processor with AMD Radeon Graphics. 16GB Dual-channel DDR4 RAM, 512GB PCIe Gen3 SSD. Full HD 15.6\" Anti-glare.",
+    "store": "amazon",
+    "brand": "Acer",
+    "category": "laptops",
+    "subcategory": "thin-and-light",
+    "price": 32990,
+    "mrp": 59990,
+    "priceHistory": [
+      {
+        "date": "2026-11-04",
+        "price": 59990
+      },
+      {
+        "date": "2026-11-11",
+        "price": 32990
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0CGF157T6",
+    "affiliateUrl": "https://www.amazon.in/dp/B0CGF157T6?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0CGF157T6?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-13T18:38:45.614Z",
+    "image": "https://m.media-amazon.com/images/I/71c5W9NxN5L._SL1500_.jpg",
+    "rating": 4.2,
+    "ratingsCount": 6400,
+    "inStock": true,
+    "tags": [
+      "trending",
+      "hot"
+    ],
+    "featured": 9,
+    "status": "active",
+    "discountPct": 45,
+    "endsInSeconds": 172799997
+  },
+  {
+    "id": "amazon-B0D7HWNLLX",
+    "slug": "amazon-samsung-galaxy-m35-5g-daylight-blue-6gb-ram-128gb--B0D7HWNLLX",
+    "title": "Samsung Galaxy M35 5G (Daylight Blue, 6GB RAM, 128GB Storage)",
+    "description": "Monster 6000mAh Battery, 50MP OIS Camera, Super AMOLED 120Hz.",
+    "store": "amazon",
+    "brand": "Amazon",
+    "category": "mobiles",
+    "price": 14999,
+    "mrp": 24499,
+    "priceHistory": [
+      {
+        "date": "2026-11-11",
+        "price": 14999
+      }
+    ],
+    "productUrl": "https://www.amazon.in/dp/B0D7HWNLLX",
+    "affiliateUrl": "https://www.amazon.in/dp/B0D7HWNLLX?tag=muddapappu_21",
+    "networkLink": "https://www.amazon.in/dp/B0D7HWNLLX?tag=muddapappu_21",
+    "source": "api",
+    "verifiedAt": "2026-11-11T18:38:45.597Z",
+    "listedAt": "2026-11-11T18:38:45.597Z",
+    "endsAt": "2026-11-14T18:38:45.615Z",
+    "image": "https://m.media-amazon.com/images/I/81LV2vC+jDL._SL1500_.jpg",
+    "rating": 4.3,
+    "ratingsCount": 500,
+    "inStock": true,
+    "tags": [
+      "trending"
+    ],
+    "featured": 5,
+    "status": "active",
+    "discountPct": 39,
+    "endsInSeconds": 259199998
   }
 ]
