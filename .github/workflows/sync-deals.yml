@@ -1,0 +1,54 @@
+name: Automated Deals Sync (Amazon & Cuelinks)
+
+on:
+  schedule:
+    # Run every hour for fresh deals & price tracking
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Allow manual execution anytime from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync-deals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync Amazon Deals & Verify Affiliate Tags
+        run: npm run sync:amazon
+        env:
+          AMAZON_TAG: ${{ secrets.AMAZON_TAG || 'muddapappu-21' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REPO: auto
+
+      - name: Sync Cuelinks Deals (if API key configured)
+        if: ${{ env.CUELINKS_API_KEY != '' }}
+        run: npm run sync:cuelinks
+        env:
+          CUELINKS_API_KEY: ${{ secrets.CUELINKS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REPO: auto
+
+      - name: Commit & Push Updated Deals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/store/deals.json data/store/coupons.json
+          git diff --quiet && echo "No changes to commit" || (git commit -m "Auto-sync: update Amazon & live deals [skip ci]" && git push origin main)

@@ -1,0 +1,29 @@
+{
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "node_modules",
+      "functions",
+      "src"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "destination": "/api/index.html"
+      },
+      {
+        "source": "/**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions",
+    "ignore": [
+      "node_modules",
+      "src"
+    ]
+  }
+}

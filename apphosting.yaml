@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.githubusercontent.com/firebase/apphosting/1.0/apphosting-config.json",
+  "runConfig": {
+    "region": "us-central1",
+    "cpu": 1,
+    "memoryMiB": 512,
+    "concurrency": 80,
+    "maxInstances": 10,
+    "minInstances": 0
+  },
+  "env": {
+    "REPO": "auto",
+    "NODE_ENV": "production"
+  }
+}

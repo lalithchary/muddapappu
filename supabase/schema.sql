@@ -77,7 +77,7 @@ create index if not exists clicks_clicked_idx   on public.clicks(clicked_at desc
 -- (product request, shared deal tip) rather than a comment on a product.
 create table if not exists public.comments (
   id          text primary key,
-  deal_slug   text references public.deals(slug) on delete cascade,
+  deal_slug   text references public.deals(slug) on delete set null,
   author      text not null,
   message     text not null,
   created_at  timestamptz not null default now()

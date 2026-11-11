@@ -11,6 +11,7 @@
     "seed": "tsx scripts/seed.ts",
     "ingest": "tsx scripts/ingest.ts",
     "sync:cuelinks": "tsx scripts/sync-cuelinks.ts",
+    "sync:amazon": "tsx scripts/sync-amazon.ts",
     "placeholders": "node scripts/generate-placeholders.mjs"
   },
   "dependencies": {

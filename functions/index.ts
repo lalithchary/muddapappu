@@ -1,0 +1,1 @@
+export { syncDeals, syncAmazonDeals, manualSync } from './src/index';
