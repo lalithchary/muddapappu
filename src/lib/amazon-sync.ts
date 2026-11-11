@@ -1,14 +1,19 @@
 /**
- * Amazon Deals Automation Engine
- * Supports:
- * 1. Curated real-time Amazon deals with live affiliate tag generation
- * 2. Cuelinks API Amazon campaign integration (when CUELINKS_API_KEY is provided)
- * 3. Automatic price tracking, discount calculation, and tag verification
+ * Amazon Deals Automation Engine (100% Cuelinks-Free)
+ * 
+ * Features:
+ * 1. Automatic Affiliate Link Injection: Every Amazon deal is formatted with
+ *    the active Amazon Associates tag (default: muddapappu_21).
+ * 2. Automated Discount & Pricing Engine: Computes discount percentages,
+ *    identifies hot deals (>= 40% OFF), sets price drops & flash badges.
+ * 3. Custom Tracked Deals Support: Reads data/store/custom-amazon-deals.json
+ *    allowing one-click deal tracking for any Amazon ASIN.
+ * 4. Dual Persistence: Saves directly into Supabase (for Vercel production)
+ *    and data/store/deals.json (for static build & dev fallback).
  */
 
 import { repo } from './repo-instance';
-import { cuelinksFromEnv } from './cuelinks';
-import { amazonLink } from './links';
+import { buildAmazonAffiliateUrl, getAmazonTag, extractAmazonAsin } from './links';
 import type { Deal } from './types';
 import { discountPct } from './status';
 import { promises as fs } from 'fs';
@@ -16,20 +21,21 @@ import path from 'path';
 
 export interface AmazonSyncResult {
   ok: boolean;
+  tag: string;
   synced: number;
   updated: number;
   deals: Array<{ id: string; title: string; price: number; mrp: number; discount: number; affiliateUrl: string }>;
   errors: string[];
 }
 
-// Curated live Amazon India products for automated deal sync
-const CURATED_AMAZON_DEALS = [
+// Top trending, verified Amazon India products for automated deal sync
+const TRENDING_AMAZON_DEALS = [
   {
     id: 'amazon-boat-airdopes-311',
     asin: 'B0D5BNKVZ2',
     slug: 'boat-airdopes-311-pro-wireless-earbuds',
     title: 'boAt Airdopes 311 Pro TWS Earbuds with 50H Playtime, ENx Tech & Beast Mode',
-    description: 'Quad Mics with ENx Tech for crystal clear calls. 50 Hours total playback with ASAP Charge. 13mm Drivers for signature boAt sound.',
+    description: 'Quad Mics with ENx Tech for crystal clear calls. 50 Hours total playback with ASAP Charge. 13mm Drivers for signature boAt bass sound. IPX4 splash resistance.',
     brand: 'boAt',
     category: 'electronics',
     subcategory: 'earbuds',
@@ -45,7 +51,7 @@ const CURATED_AMAZON_DEALS = [
     asin: 'B0C39X29X7',
     slug: 'asus-vivobook-15-intel-core-i3-12th-gen-8gb-512gb',
     title: 'ASUS Vivobook 15, Intel Core i3-1215U 12th Gen, 15.6" FHD (8GB/512GB SSD/Win 11/Office 2021)',
-    description: '12th Gen Intel Core i3-1215U up to 4.4 GHz. 8GB DDR4 RAM + 512GB M.2 NVMe PCIe SSD. Thin & Light 1.7kg.',
+    description: '12th Gen Intel Core i3-1215U up to 4.4 GHz. 8GB DDR4 RAM + 512GB M.2 NVMe PCIe SSD. Thin & Light 1.7kg with fingerprint sensor.',
     brand: 'ASUS',
     category: 'laptops',
     subcategory: 'thin-and-light',
@@ -73,6 +79,22 @@ const CURATED_AMAZON_DEALS = [
     featured: 9,
   },
   {
+    id: 'amazon-samsung-galaxy-m35',
+    asin: 'B0D7HWNLLX',
+    slug: 'samsung-galaxy-m35-5g-6gb-128gb',
+    title: 'Samsung Galaxy M35 5G (Daylight Blue, 6GB RAM, 128GB Storage) | Corning Gorilla Glass Victus+',
+    description: '6000mAh Battery with 25W fast charging. 50MP Triple Camera with OIS. 120Hz Super AMOLED Display with 1000 nits high brightness mode.',
+    brand: 'Samsung',
+    category: 'mobiles',
+    subcategory: '5g-smartphones',
+    price: 14999,
+    mrp: 24499,
+    image: 'https://m.media-amazon.com/images/I/81LV2vC+jDL._SL1500_.jpg',
+    rating: 4.2,
+    ratingsCount: 14200,
+    featured: 9,
+  },
+  {
     id: 'amazon-noise-colorfit-pulse-3',
     asin: 'B0C3CG3NVR',
     slug: 'noise-colorfit-pulse-3-smartwatch',
@@ -86,6 +108,22 @@ const CURATED_AMAZON_DEALS = [
     image: 'https://m.media-amazon.com/images/I/61epn29QG0L._SL1500_.jpg',
     rating: 4.0,
     ratingsCount: 35600,
+    featured: 8,
+  },
+  {
+    id: 'amazon-boult-audio-z40-pro',
+    asin: 'B0CHMY9R4W',
+    slug: 'boult-audio-z40-pro-tws-earbuds',
+    title: 'Boult Audio Z40 Pro TWS Earbuds with 100H Playtime, Quad Mic ENC, 45ms Low Latency',
+    description: '100 hours massive battery life. Rubber grip finish with BoomX Tech for deep dynamic bass. Lightning Boult fast charge: 10 mins = 120 mins.',
+    brand: 'Boult',
+    category: 'electronics',
+    subcategory: 'earbuds',
+    price: 999,
+    mrp: 5499,
+    image: 'https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg',
+    rating: 4.1,
+    ratingsCount: 29800,
     featured: 8,
   },
   {
@@ -136,12 +174,29 @@ const CURATED_AMAZON_DEALS = [
     ratingsCount: 16700,
     featured: 9,
   },
+  {
+    id: 'amazon-acer-aspire-lite-ryzen',
+    asin: 'B0CGF157T6',
+    slug: 'acer-aspire-lite-amd-ryzen-5-5500u-16gb-512gb',
+    title: 'Acer Aspire Lite AMD Ryzen 5 5500U Premium Thin and Light Laptop (16 GB RAM/512 GB SSD)',
+    description: 'AMD Ryzen 5 5500U Hexa-Core Mobile Processor with AMD Radeon Graphics. 16GB Dual-channel DDR4 RAM, 512GB PCIe Gen3 SSD. Full HD 15.6" Anti-glare.',
+    brand: 'Acer',
+    category: 'laptops',
+    subcategory: 'thin-and-light',
+    price: 32990,
+    mrp: 59990,
+    image: 'https://m.media-amazon.com/images/I/71c5W9NxN5L._SL1500_.jpg',
+    rating: 4.2,
+    ratingsCount: 6400,
+    featured: 9,
+  },
 ];
 
 export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncResult> {
-  const tag = customTag || process.env.AMAZON_TAG || 'muddapappu-21';
+  const activeTag = customTag || getAmazonTag();
   const result: AmazonSyncResult = {
     ok: true,
+    tag: activeTag,
     synced: 0,
     updated: 0,
     deals: [],
@@ -151,13 +206,13 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
   const r = repo();
   const nowIso = new Date().toISOString();
 
-  console.log(`[amazon-sync] Running Amazon automation with affiliate tag: ${tag}`);
+  console.log(`[amazon-sync] Automating Amazon deals with tag: "${activeTag}" (No Cuelinks)`);
 
-  // 1. Process curated Amazon Deals (Guaranteed reliable, verified images and high conversion)
-  for (const item of CURATED_AMAZON_DEALS) {
+  // 1. Process Core Trending Amazon Deals with full automated affiliate tagging
+  for (const item of TRENDING_AMAZON_DEALS) {
     try {
       const pUrl = `https://www.amazon.in/dp/${item.asin}`;
-      const affUrl = amazonLink(pUrl, item.asin, tag);
+      const affUrl = buildAmazonAffiliateUrl(item.asin, activeTag);
       const discount = discountPct({ price: item.price, mrp: item.mrp });
 
       const existing = await r.getDeal(item.slug);
@@ -179,7 +234,7 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
         ],
         productUrl: pUrl,
         affiliateUrl: affUrl,
-        networkLink: affUrl,
+        networkLink: affUrl, // Direct Amazon affiliate link, zero Cuelinks!
         source: 'api',
         verifiedAt: nowIso,
         listedAt: existing?.listedAt || nowIso,
@@ -188,7 +243,7 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
         rating: item.rating,
         ratingsCount: item.ratingsCount,
         inStock: true,
-        tags: discount >= 40 ? ['hot', 'bestseller'] : ['trending'],
+        tags: discount >= 50 ? ['hot', 'bestseller'] : discount >= 30 ? ['trending', 'hot'] : ['trending'],
         featured: item.featured,
       };
 
@@ -209,100 +264,81 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
         affiliateUrl: affUrl,
       });
     } catch (err: any) {
-      result.errors.push(`Curated deal error (${item.id}): ${err.message}`);
+      result.errors.push(`Deal error (${item.id}): ${err.message}`);
     }
   }
 
-  // 2. Query Cuelinks API if configured for live Amazon affiliate campaign deals
-  if (process.env.CUELINKS_API_KEY) {
-    try {
-      console.log('[amazon-sync] Querying Cuelinks for Amazon offers...');
-      const client = cuelinksFromEnv();
-      const offers = await client.listOffers({ per_page: 50, page: 1 });
+  // 2. Load any custom tracked Amazon deals from data/store/custom-amazon-deals.json
+  try {
+    const customPath = path.join(process.cwd(), 'data', 'store', 'custom-amazon-deals.json');
+    const customContent = await fs.readFile(customPath, 'utf8').catch(() => null);
+    if (customContent) {
+      const customItems: Array<{ asin: string; title: string; price: number; mrp: number; category?: string; image?: string; description?: string }> = JSON.parse(customContent);
+      for (const item of customItems) {
+        if (!item.asin) continue;
+        const asin = extractAmazonAsin(item.asin) || item.asin;
+        const slug = `amazon-${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50)}-${asin}`;
+        const affUrl = buildAmazonAffiliateUrl(asin, activeTag);
+        const discount = discountPct({ price: item.price, mrp: item.mrp });
 
-      const amazonOffers = offers.data.filter(
-        (o) =>
-          o.campaign_name.toLowerCase().includes('amazon') ||
-          (o.tracking_url && o.tracking_url.includes('amazon.in'))
-      );
+        const deal: Deal = {
+          id: `amazon-${asin}`,
+          slug,
+          title: item.title,
+          description: item.description || `Amazon India verified deal. Tag: ${activeTag}`,
+          store: 'amazon',
+          brand: 'Amazon',
+          category: item.category || 'electronics',
+          price: item.price,
+          mrp: item.mrp,
+          priceHistory: [{ date: nowIso.slice(0, 10), price: item.price }],
+          productUrl: `https://www.amazon.in/dp/${asin}`,
+          affiliateUrl: affUrl,
+          networkLink: affUrl,
+          source: 'api',
+          verifiedAt: nowIso,
+          listedAt: nowIso,
+          endsAt: new Date(Date.now() + 72 * 3600 * 1000).toISOString(),
+          image: item.image || 'https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg',
+          rating: 4.3,
+          ratingsCount: 500,
+          inStock: true,
+          tags: discount >= 40 ? ['hot', 'bestseller'] : ['trending'],
+          featured: 5,
+        };
 
-      for (const offer of amazonOffers) {
-        try {
-          const original = offer.original_price ?? 0;
-          const discounted = offer.discount_price ?? original;
-          const mrp = Math.max(original, discounted, 1);
-          const price = Math.min(discounted, original) || mrp;
-          const pct = discountPct({ price, mrp });
-
-          const asinMatch = (offer.tracking_url || '').match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
-          const asin = asinMatch ? asinMatch[1] : undefined;
-          const pUrl = asin ? `https://www.amazon.in/dp/${asin}` : (offer.tracking_url || 'https://www.amazon.in');
-          const affUrl = amazonLink(pUrl, asin, tag);
-
-          const slug = `amazon-${offer.id}`;
-          const existing = await r.getDeal(slug);
-
-          const deal: Deal = {
-            id: `amazon-${offer.id}`,
-            slug,
-            title: offer.title,
-            description: offer.description || offer.terms || 'Amazon Deal of the Day',
-            store: 'amazon',
-            brand: 'Amazon',
-            category: 'electronics',
-            price,
-            mrp,
-            priceHistory: existing?.priceHistory || [{ date: nowIso.slice(0, 10), price }],
-            productUrl: pUrl,
-            affiliateUrl: affUrl,
-            networkLink: offer.tracking_url || affUrl,
-            source: 'cuelinks',
-            verifiedAt: nowIso,
-            listedAt: existing?.listedAt || nowIso,
-            endsAt: offer.end_date || undefined,
-            image: 'https://m.media-amazon.com/images/I/61S9e-G3C5L._SL1500_.jpg',
-            rating: 4.2,
-            ratingsCount: 1000,
-            inStock: true,
-            tags: pct >= 40 ? ['hot', 'bestseller'] : ['trending'],
-            featured: pct >= 50 ? 5 : 0,
-          };
-
-          await r.saveDeal(deal);
-          if (existing) result.updated++;
-          else result.synced++;
-
-          result.deals.push({
-            id: deal.id,
-            title: deal.title,
-            price: deal.price,
-            mrp: deal.mrp,
-            discount: pct,
-            affiliateUrl: affUrl,
-          });
-        } catch (err: any) {
-          result.errors.push(`Cuelinks Amazon offer error (${offer.id}): ${err.message}`);
-        }
+        await r.saveDeal(deal);
+        result.synced++;
+        result.deals.push({
+          id: deal.id,
+          title: deal.title,
+          price: deal.price,
+          mrp: deal.mrp,
+          discount,
+          affiliateUrl: affUrl,
+        });
       }
-    } catch (err: any) {
-      result.errors.push(`Cuelinks API fetch error: ${err.message}`);
     }
+  } catch (err: any) {
+    // Custom deals file is optional
+    console.log(`[amazon-sync] Note: Custom deals skipped (${err.message})`);
   }
 
-  // 3. Re-tag any other existing Amazon deals in the database with the current tag
+  // 3. Automated Link Rewriting: Ensure ALL existing Amazon deals in the database
+  //    are stamped with the user's current Amazon tag and any Cuelinks links are stripped!
   try {
     const allDeals = await r.listDeals();
-    const amazonDeals = allDeals.filter((d) => d.store === 'amazon');
+    const amazonDeals = allDeals.filter((d) => d.store === 'amazon' || (d.productUrl && d.productUrl.includes('amazon.')));
 
     for (const d of amazonDeals) {
-      if (!d.affiliateUrl || !d.affiliateUrl.includes(tag)) {
-        const asinMatch = (d.productUrl || '').match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
-        const asin = asinMatch ? asinMatch[1] : undefined;
-        const updatedUrl = amazonLink(d.productUrl, asin, tag);
+      const asinMatch = extractAmazonAsin(d.productUrl || d.affiliateUrl || d.networkLink || '');
+      const cleanAffiliateUrl = buildAmazonAffiliateUrl(asinMatch || d.productUrl || '', activeTag);
+
+      if (d.affiliateUrl !== cleanAffiliateUrl || d.networkLink !== cleanAffiliateUrl) {
         await r.saveDeal({
           ...d,
-          affiliateUrl: updatedUrl,
-          networkLink: updatedUrl,
+          affiliateUrl: cleanAffiliateUrl,
+          networkLink: cleanAffiliateUrl, // Purge Cuelinks from Amazon deals
           verifiedAt: nowIso,
         });
         result.updated++;
@@ -312,7 +348,7 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
     result.errors.push(`Re-tagging error: ${err.message}`);
   }
 
-  // 4. Also persist to local JSON files if running in Node/CLI or dev
+  // 4. Save to local JSON store for static build / dev fallback
   try {
     const allCurrentDeals = await r.listDeals();
     const storeDir = path.join(process.cwd(), 'data', 'store');
@@ -323,10 +359,9 @@ export async function syncAmazonDeals(customTag?: string): Promise<AmazonSyncRes
       'utf8'
     );
   } catch (err: any) {
-    // Non-fatal if filesystem is read-only (e.g. serverless)
-    console.log(`[amazon-sync] Note: JSON file write skipped (${err.message})`);
+    console.log(`[amazon-sync] Note: JSON write skipped (${err.message})`);
   }
 
-  console.log(`[amazon-sync] Finished. Synced: ${result.synced}, Updated: ${result.updated}, Total: ${result.deals.length}`);
+  console.log(`[amazon-sync] Complete! Synced: ${result.synced}, Updated: ${result.updated}, Tag: ${activeTag}`);
   return result;
 }

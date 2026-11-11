@@ -8,6 +8,7 @@ import { formatPrice, StatusBadge, formatCountdown } from './status-badge';
 import { StoreChip } from './store-chip';
 import { Sparkline } from './sparkline';
 import { CommentModal } from './comment-modal';
+import { getOutboundUrl } from '@/lib/links';
 import type { DealResult } from '@/lib/types';
 
 export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; commentCount?: number }) {
@@ -110,7 +111,7 @@ export function DealCard({ deal, commentCount = 0 }: { deal: DealResult; comment
         {/* Action row */}
         <div className="mt-auto flex items-center gap-2 pt-1">
           <a
-            href={deal.networkLink || deal.affiliateUrl || deal.productUrl}
+            href={getOutboundUrl(deal)}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className={cn(

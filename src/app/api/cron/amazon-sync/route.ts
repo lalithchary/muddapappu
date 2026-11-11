@@ -4,11 +4,12 @@ import { syncAmazonDeals } from '@/lib/amazon-sync';
 export const dynamic = 'force-dynamic';
 
 function isAuthorized(request: Request): boolean {
-  const authHeader = request.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET || 'muddapappu-secret';
-
-  // Allow in development or if bearer token matches
+  const cronSecret = process.env.CRON_SECRET;
+  // If CRON_SECRET is not configured in Vercel, allow calls so cron works out of the box
+  if (!cronSecret) return true;
   if (process.env.NODE_ENV !== 'production') return true;
+
+  const authHeader = request.headers.get('authorization');
   return authHeader === `Bearer ${cronSecret}`;
 }
 

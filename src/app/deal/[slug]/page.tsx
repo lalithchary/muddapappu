@@ -6,6 +6,7 @@ import { formatPrice, StatusBadge, formatCountdown } from '@/components/status-b
 import { StoreChip } from '@/components/store-chip';
 import { cn } from '@/lib/cn';
 import { Sparkline } from '@/components/sparkline';
+import { getOutboundUrl } from '@/lib/links';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -75,7 +76,7 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a
-              href={deal.networkLink || deal.affiliateUrl || deal.productUrl}
+              href={getOutboundUrl(deal)}
               target="_blank"
               rel="noopener noreferrer sponsored"
               className={cn(

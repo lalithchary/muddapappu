@@ -32,7 +32,7 @@ jobs:
       - name: Sync Amazon Deals & Verify Affiliate Tags
         run: npm run sync:amazon
         env:
-          AMAZON_TAG: ${{ secrets.AMAZON_TAG || 'muddapappu-21' }}
+          AMAZON_TAG: ${{ secrets.AMAZON_TAG || 'muddapappu_21' }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           REPO: auto
